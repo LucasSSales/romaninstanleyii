@@ -1,0 +1,17 @@
+var x = random(-50, 390);  
+var y = random(-20, 400);
+background(0);
+draw = function() {
+    x+=random(1, 4);
+    y+=random(1, 9);
+    if (y > random(0, 450)) {
+        y-=9;
+    }
+    if (x > random(350, 450)) {
+        x = random(-50, 390);
+        y = random(-20, 400);
+    }
+    fill(random(0, 55), random(0, 55), random(0, 55));
+    stroke(255);
+    ellipse(x, y, random(35, 45), random(35, 45));
+};
