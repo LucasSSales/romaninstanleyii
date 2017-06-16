@@ -1,0 +1,26 @@
+println("5" + 3 - 3);
+
+println("5" - 3 + 3);
+
+var a = "5";
+println(typeof a); // string
+println(-a); // -5
+println(typeof -a); // number
+
+// Coercion to number with bitwise OR
+println(a|0); // 5
+println(typeof (a|0)); // number
+
+println (typeof(+a)); // number
+
+println(a+4); 
+println(typeof(a+4));   //number 
+println(typeof(a/4));  //number (again)
+println((a*4).toString()); //string
+println(typeof((a*4).toString())); //convert a*4 to string = coerced
+println ( (a*3)/"2");
+println ( typeof(a*3/"2"));  //number
+println ("9"/"4");
+println (typeof("9"/"4")); //number
+
+//addition to a string keeps it a string, division, subtraction, multiplication doesn't. 
