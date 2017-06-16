@@ -1,0 +1,143 @@
+background(219, 255, 255);
+    var houseX = 75;
+    var houseWidth = 250;
+    var windowWidth = houseWidth / 4;
+    var houseHeight = 210;
+    var windowHeight = houseHeight / 4;
+    var houseY = 150;
+    var shillingWidth = 22;
+    var shillingHeight = 16;
+        var bricks = function () {
+        for (var j = 0; j < 13; j+=2) {
+            for (var i = 0; i < 10; i++) {
+                stroke(255);
+                fill(138, 33, 33);
+                rect(houseX + i * 25, houseY + j * 15, 25, 15);
+            }
+        }
+        for (var j = -2; j < 13; j+=2) {
+            for (var i = 0; i < 9; i++) {
+                rect(86 + i * 25, 165 + j * 15, 25, 15);
+            }
+        }
+        for (var j = -2; j < 13; j+=2) {
+            for (var i = 76; i < 325; i+=235) {
+                rect(i, 165 + j * 15, 12.5, 15);
+            }
+        }
+        };
+        var shillings = function() {
+            stroke(0, 0, 0);
+            strokeWeight(3.7);
+            fill(99, 0, 97);
+                for (var j = 0; j < 11; j++) { 
+                    for (var i = 0; i < 7; i ++) {
+                    arc(134 + i * 22, 60 + j * 8, 22, 16, 0, 180);
+                    }
+                }
+                for (var j = 0; j < 8; j++) {
+                    for (var i = 0; i < 2; i++) {
+                        arc(134 - shillingWidth + i * (8 *  shillingWidth), 60 + shillingHeight * 1.5 + j * shillingHeight / 2, shillingWidth,  shillingHeight, 0, 180);
+                    }
+                }
+                for (var j = 0; j < 5; j++) {
+                    for (var i = 0; i < 2; i++) {
+                        arc(134 - shillingWidth * 2 + i * (10 * shillingWidth), 60 + shillingHeight * 3 + j * shillingHeight / 2, shillingWidth, shillingHeight, 0, 180);
+                        }
+                }
+                for (var j = 0; j < 2; j++) {
+                    for (var i = 0; i < 2; i++) {
+                        arc (134 - shillingWidth * 3 + i * (shillingWidth * 12), 60 + shillingHeight * 4.5 + j * shillingHeight / 2, shillingWidth, shillingHeight, 0, 180);
+                    }
+                }
+        //roof over top right window
+        strokeWeight(1.5);
+        stroke(255, 255, 255);
+        fill(138, 33, 33);
+        beginShape(); 
+        vertex(houseX + 2.75 * windowWidth - 31.5, 151);
+        vertex(262.5, 150 - 67.5);
+        vertex(309.375, 151);
+        endShape();    
+};
+        var door = function() {
+        fill(255, 255, 255);
+        strokeWeight(3);
+        stroke(199, 199, 199);
+        rect(houseX + houseWidth / 6, 284, houseWidth / 6, 75); //door
+        noStroke();
+        
+        fill(161);
+        quad(117 + 45, 359, 116 + 41, 369, 28, 369, 38, 359);
+};
+        var grass = function() {
+        for (var j = 343; j < 398; j += 8) {
+            for (var i = 40; i < 382; i+=5) {
+                if (i % 2) {
+                    fill(27, 135, 11);
+                } else {
+                    fill(255, 216, 59);
+                }  
+                noStroke();
+                triangle(i + 2, j, i, j + 8, i + 4, j + 8);
+            }
+            
+        }
+        };
+        var dirt = function() {
+            fill(69, 25, 25);
+            quad(100, 327, 300, 327, 500, 500, -100, 500);
+};
+        var fence = function() {
+            noStroke();
+            fill(110, 50, 50);
+            beginShape(); 
+            vertex(-100, 500);
+            vertex(100, 327);
+            vertex(300, 327);
+            vertex(500, 500);
+            vertex(650, 500);
+            vertex(320, 260);
+            vertex(80, 260);
+            vertex(-250, 500);
+            endShape();
+};
+        var windows = function() {
+        stroke(255, 255, 255);
+        strokeWeight(3);
+        fill(50, 186, 179);
+        for (var i = 75 + windowWidth / 4; i < 247; i+=windowWidth * 2.5) {
+            rect(i, 150 + windowWidth / 4, 62.5, windowHeight);
+        }
+        for (var i = 0; i < 2; i++) { 
+            rect((0.75 * windowWidth + houseX) + i * (2.5 * windowWidth), 153 + windowWidth / 4, windowWidth / 2, 46.5);
+        }
+        
+        rect(houseX + 2.75 * windowWidth - 31.5, 150 + windowWidth / 4, windowWidth / 2, windowHeight);
+        rect(houseX + 2.75 * windowWidth - 31.25, 153 + windowWidth / 4, windowWidth / 2, windowHeight - 6);
+};
+        var extraWalkOne = function() {
+            fill(161);
+            noStroke();
+            quad(28, 369, -2, 400, 35, 400, 70, 355);
+};
+        var extraWalkTwo = function() {
+            fill(161, 161, 161  );
+            triangle(28, 369, 191, 200, 300, 345);
+            line(28, 369, 191, 200);
+};
+        var bushes = function () {
+        for (var i = 159; i < 300; i+=houseWidth / 10) {
+            image(getImage("cute/TreeShort"), i, 322, houseWidth / 6, houseHeight / 4);
+        }
+};
+    dirt();
+    grass();
+    fence();
+    extraWalkTwo();
+    bricks();
+    shillings();
+    door();
+    windows();
+    extraWalkOne();
+    bushes();
