@@ -1,0 +1,70 @@
+var bodyX = 200;
+var bodyY = 201;
+var bodyWidth = 111;
+var bodyHeight = 135;
+var eyeWidth = bodyWidth / 13.0588235294;
+var eyeHeight = bodyHeight / 12.2727272727;
+    var headWidth;
+    var headHeight;
+    var eyeWidth;
+    var eyeHeight;
+    var neckWidth;
+    var neckHeight;
+    var neckTwoWidth;
+    var neckTwoHeight;
+    var beakWidth;
+    var beakHeight;
+        var headY;
+        var neckY;
+        var neckTwoY;
+        var eyeY;
+        var eyeX1;
+        var eyeX2;
+        var beakY;
+
+draw = function() {
+    headWidth = bodyWidth / 3.08333333333;
+    headHeight = bodyHeight / 2.8125;
+    neckWidth = bodyWidth / 1.85;
+    neckHeight = bodyHeight / 2.45454545455;
+    neckTwoWidth = bodyWidth / 2.775;
+    neckTwoHeight = bodyHeight / 4.5;
+    beakWidth = headWidth / 2;
+    beakHeight = headHeight / 1.75;
+        headY = bodyY - bodyHeight / 2;
+        neckY = bodyY - bodyHeight / 3.375;
+        neckTwoY = bodyY - bodyHeight / 3.21428571429;
+        eyeY = bodyY - bodyHeight / 1.875;
+        eyeX1 = bodyX - bodyWidth / 13.0588235294;
+        eyeX2 = bodyX + bodyWidth / 13.0588235294;
+        beakY = bodyY - bodyHeight / 2.45454545454545;
+    background(31, 177, 255);
+    
+    noStroke(); //for everything (doesn't it look like the eyes have a stroke?)
+    fill(180, 179, 179); //for wings and tail
+    triangle(bodyX + bodyWidth / 0.63428571428571, bodyY - bodyHeight / 3.85714285714286, bodyX, bodyY - bodyHeight / 3, bodyX, bodyY + bodyHeight / 4.5); //right wing
+    triangle(bodyX - bodyWidth / 0.63428571428571, bodyY - bodyHeight / 3.85714285714286, bodyX, bodyY - bodyHeight / 3, bodyX, bodyY + bodyHeight / 4.5); //left wing
+    arc(bodyX, bodyY + bodyHeight / 2.7, bodyWidth / 1.11, bodyHeight / 1.5, 28, 152);
+    fill(214, 205, 159); //body
+    ellipse(bodyX, bodyY, bodyWidth, bodyHeight); 
+    fill(74, 24, 24); //neckcolor
+    ellipse(bodyX, neckY, neckWidth, neckHeight); 
+    fill(214, 205, 159);  //neck no. two
+    ellipse(bodyX, neckTwoY, neckTwoWidth, neckTwoHeight);
+    fill(0, 128, 19); //head
+    ellipse(bodyX, headY, headWidth, headHeight); 
+    fill(255, 0, 0); //eyes
+    ellipse(eyeX1, eyeY, eyeWidth, eyeHeight); 
+    ellipse(eyeX2, eyeY, eyeWidth, eyeHeight);
+    fill(234, 240, 70); //beak
+    ellipse(bodyX, beakY, beakWidth, beakHeight);
+    fill(240, 117, 9); //feet
+    triangle(bodyX + bodyWidth / 7.4, bodyY + bodyHeight / 2.25, bodyX + bodyWidth / 3.17142857142857, bodyY + bodyHeight / 4.5, bodyX + bodyWidth / 22.2, bodyY + bodyHeight / 4.5); //right foot
+    triangle(bodyX - bodyWidth / 7.4, bodyY + bodyHeight / 2.25, bodyX - bodyWidth / 22.2, bodyY + bodyHeight / 4.5, bodyX - bodyWidth / 3.17142857142857, bodyY + bodyHeight / 4.5); //left foot
+    //bodyY--;
+    //bodyX ++;
+    bodyWidth += 2;
+    bodyHeight += 2;
+    eyeWidth += 0.3;
+    eyeHeight += 0.3;
+};
