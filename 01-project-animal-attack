@@ -58,7 +58,7 @@ draw = function() {
     ellipse(eyeX2, eyeY, eyeWidth, eyeHeight);
     fill(234, 240, 70); //beak
     ellipse(bodyX, beakY, beakWidth, beakHeight);
-    fill(240, 117, 9); //feet
+    fill(240, 117, 9); //feet 
     triangle(bodyX + bodyWidth / 7.4, bodyY + bodyHeight / 2.25, bodyX + bodyWidth / 3.17142857142857, bodyY + bodyHeight / 4.5, bodyX + bodyWidth / 22.2, bodyY + bodyHeight / 4.5); //right foot
     triangle(bodyX - bodyWidth / 7.4, bodyY + bodyHeight / 2.25, bodyX - bodyWidth / 22.2, bodyY + bodyHeight / 4.5, bodyX - bodyWidth / 3.17142857142857, bodyY + bodyHeight / 4.5); //left foot
     //bodyY--;
