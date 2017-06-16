@@ -1,0 +1,17 @@
+background(0);
+draw = function() {
+    var russianText = {
+        lang: ['Россия', 'Ленин', 'любовь', 'архитектура', 'квас'],
+        arrayIndex: round(random(0, 4)),
+        xPos: random(-20, 400),
+        firstY: random(0, 133),
+        secondY: random(134, 266),
+        thirdY: random(267, 400)
+    };
+    fill(240, 240, 240);
+    text(russianText.lang[russianText.arrayIndex], russianText.xPos, russianText.firstY);
+    fill(0, 0, 255);
+    text(russianText.lang[russianText.arrayIndex], russianText.xPos, russianText.secondY);
+    fill(255, 0, 0);
+    text(russianText.lang[russianText.arrayIndex], russianText.xPos, russianText.thirdY);
+};
