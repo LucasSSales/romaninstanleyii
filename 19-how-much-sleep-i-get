@@ -23,7 +23,6 @@
 
 
 
-
 var Plot = function(y, hours, dates){
     this.y = y;
     this.hours = hours;
