@@ -1,0 +1,53 @@
+/**Hello, thanks for stopping by! Vote up if you like what you see. Programmed by Roman @r1001101**/
+noStroke();
+background(0);
+var ColorInfo = {
+    amountOfRed: random(100, 255), 
+    amountOfGreen: random(100, 255),
+    amountOfBlue: random(100, 255),
+    colorSpeed: 0.1, //initial speed at which colors change
+};
+//how much/quickly the rotation changes direction
+var alteringVelocity = 1;
+var alteringAcceleration = 1; 
+
+var maxKaleidSpeed = 30000; //past this speed of change there will be no visible change to the naked eye
+//change these 
+var kaleidSpeed = 0; //out of a max speed of 30,000
+var slowMotionIntensity = 100; //any number 1-5000
+
+draw = function() {
+    if (kaleidSpeed < maxKaleidSpeed) {
+        kaleidSpeed++; //how fast the kaleid. speed will increase
+    }
+    for (var i = alteringVelocity; i < kaleidSpeed; i += slowMotionIntensity) {
+        fill(ColorInfo.amountOfRed, ColorInfo.amountOfGreen, ColorInfo.amountOfBlue);
+        pushMatrix();
+        translate(200, 200); //center of screen using translate()
+        rotate(i);
+        ellipse(0, 0, 340, 0.5); //last two alter size of kaleid. ellipse, 2nd the thinness of the ellipses
+        popMatrix();
+        
+        /*  Place these commands inside the for loop so that each INDIVIDUAL ellipse is
+            colored differently, as opposed to having all of the ellipses colored a new, 
+            changing color by having the commands placed elsewhere in the draw function     */
+        ColorInfo.amountOfRed -= ColorInfo.colorSpeed;
+        ColorInfo.amountOfGreen += ColorInfo.colorSpeed;
+        ColorInfo.amountOfBlue -= ColorInfo.colorSpeed;
+    }
+    
+    //colors never change beyond parameters 0 and 255
+    if (ColorInfo.amountOfRed < 0) {
+        ColorInfo.colorSpeed = -2;
+    } else if (ColorInfo.amountOfGreen < 0) {
+        ColorInfo.colorSpeed = 2;
+    }
+    
+    //main code
+    alteringVelocity -= alteringAcceleration;
+    if (alteringVelocity < 0) {
+        alteringAcceleration = -1;
+    } else if (alteringVelocity > 360) {
+        alteringAcceleration = 1;
+    }
+};
