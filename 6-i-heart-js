@@ -1,0 +1,40 @@
+    var k = 0;
+    var backgroundRed = 0;
+    var backgroundGreen = 255;
+    var backgroundBlue = 255;
+    var textRed = 255;
+    var textGreen = 0;
+    var textBlue = 0;
+    var colorSpeed = 1;
+draw = function() {
+    backgroundRed = backgroundRed + colorSpeed;
+    backgroundGreen = backgroundGreen - colorSpeed;
+    backgroundBlue = backgroundBlue - colorSpeed;
+    if (backgroundRed > 255) {
+        colorSpeed = -1;
+    } else if (backgroundRed < 0) {
+        colorSpeed = 1;
+    }
+    textRed = textRed - colorSpeed;
+    textGreen = textGreen + colorSpeed;
+    textBlue = textBlue + colorSpeed;
+    if (textRed < 0) {
+        colorSpeed = -1;
+    } else if (textRed > 255) {
+        colorSpeed = 1;
+    }
+    background(backgroundRed, backgroundGreen, backgroundBlue);
+    for (var j = -100; j < 429; j += 11) {
+        var i = k;
+        while (i < 450) {
+            fill(textRed, textGreen, textBlue);
+            text("I ♥️ JAVASCRIPT", i, j);
+            i += 105;
+        }
+    }
+    k--;
+    if (k < -500) {
+        fill(255, 255, 255, 200);
+        text("The x of the first column now is: " + k + " pixels from 0", 20, 380);
+    }
+};
