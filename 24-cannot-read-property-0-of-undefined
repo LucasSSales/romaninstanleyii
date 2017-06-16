@@ -1,0 +1,203 @@
+/*
+var sprites = [];
+
+var Sprite = function (x, y, w, sprite) {
+    this.graphics = createGraphics(sprite.width,sprite.height,JAVA2D);
+    this.graphics.background(0, 0);
+    this.graphics.image(sprite);
+    
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = (w / this.graphics.width) * this.graphics.height;
+    this.tint = [random (255), random (255), random (50, 255)];
+};
+
+Sprite.prototype.update = function () {
+   this.y += 5;
+   if(this.y > 400) {
+    this.y = 0;   
+   }
+};
+
+Sprite.prototype.draw = function() {
+    imageMode (CENTER);
+    tint (this.tint[0],this.tint[1],this.tint[2],this.tint[3]);
+    image (this.graphics, this.x, this.y, this.w, this.h);
+     
+};
+
+var images = [getImage("cute/Rock"),getImage("avatars/marcimus"),getImage("cute/GemBlue"),getImage("cute/ChestLid")];
+
+for (var i = 0; i < 20; i++) {
+    sprites.push (
+        new Sprite (
+            random(40,360), 
+            random(40, 360), 
+            random(40,60), 
+            images[floor(random(images.length))]
+            )
+        );    
+}
+
+
+//frameRate (30);
+var draw = function(){
+    //noLoop();
+    background(255, 255, 255);
+    for (var i = 0; i < sprites.length; i++) {
+        sprites[i].update ();
+        sprites[i].draw ();    
+    }
+};*/
+
+
+var Ship = function(x, y) {
+    this.x = x;
+    this.vx = 2;   //x speed
+    this.y = y; 
+    this.vy = 1; 
+    this.gravity = 0.5;
+    this.img = getImage("space/rocketship");
+    this.width = 70;
+    this.countHoles = 0;
+    this.score = 0;
+    this.flying = true;
+};
+
+Ship.prototype.draw = function() {
+    image(this.img, this.x, this.y, this.width, this.width);
+    if (this.flying === true) {
+        this.vx = 2;
+        if (keyIsPressed && key.toString() === " ") {
+            this.rise();
+        } else {
+            this.drop();
+        }
+            fill(238, 255, 0);
+            text("Score: "+this.score, 100, 75);
+    } else {
+        this.drop();
+        this.vx = 0;
+        if (keyIsPressed) {
+            Program.restart();
+        }
+        fill(255);
+        text("Press/hold SPACE to ascend/hover, respectively\n\nPress ENTER to fire once, hold to always fire\n\n\n\nPress any key to restart", width/2, 300);
+    }
+};
+
+Ship.prototype.rise = function() {
+    this.vy = -10;
+};
+
+Ship.prototype.drop = function() {
+    this.y+=this.vy;
+    this.vy+=this.gravity;
+};
+
+Ship.prototype.survived = function(wall, stick) {
+    if (wall.x === this.x && this.y === constrain(this.y, wall.y-wall.height/2, wall.y+wall.height/2) && this.flying === true) {
+        this.score++;
+    }
+    var inWallWidth = this.x > wall.x - wall.width && this.x < wall.x+wall.width;
+    if (this.y !== constrain(this.y, -60, height-50) || (inWallWidth && this.y < wall.y - wall.height/2) || (inWallWidth && this.y > wall.y + wall.height/2) || this.x > stick.x - 3 && this.x < stick.x + 3 && this.y < stick.y+20 && this.y > stick.y-20) {
+        this.y = constrain(this.y, -30, height-50);
+        this.flying = false;
+        fill(255, 0, 0);
+        textFont(createFont("monospace"), 20);
+        text("SCORE: "+this.score, width/2, 200);
+    } 
+};
+
+var Bullets = function(x, y) {
+    this.x = x;
+    this.y = y;
+};
+
+Bullets.prototype.draw = function() {
+    fill(255, 64, 0);
+    rect(this.x, this.y, 30, 2);
+};
+
+var Walls = function(x, y, sprite) {
+    this.graphics = createGraphics(sprite.width,sprite.height,JAVA2D);
+    this.graphics.background(0, 0);
+    this.graphics.image(sprite);
+    this.x = x;
+    this.y = y;
+    this.vx = 2;
+    this.height = 150;
+    this.width = 50;
+    this.tint = [255, 119, 0];
+};
+
+Walls.prototype.draw = function() {
+    tint (this.tint[0],this.tint[1],this.tint[2],this.tint[3]);
+    imageMode(CENTER);
+    rectMode(CENTER);
+    image (this.graphics, this.x, height/2, this.width, height); 
+    
+    fill(20, 48, 135);
+    noStroke();
+    rect(this.x, this.y, this.width, this.height);
+    this.x-=this.vx;
+};
+
+var Sticks = function(x, y) {
+    this.x = x; 
+    this.y = y;
+};
+
+Sticks.prototype.draw = function(ship) {
+    fill(255, 255, 0);
+    rect(this.x, this.y, 6, 40);
+    this.x-=ship.vx; //since the sticks loop is inside the walls loop, the vx will be                         twice as fast for the sticks. So cut it to vx * 1 (or ship.vx)
+};
+
+var dart = new Ship(width/2, height/2);
+
+var grassXs = [];
+for (var g = 0; g < width/2; g++) { 
+    grassXs.push(g*40);
+}
+
+
+var walls = [];
+for (var w = 0; w < 2; w++) {
+    walls.push(new Walls(width/2 * w + 700, random(75, height-175), getImage("space/collisioncircle")));
+}
+
+var sticks = [new Sticks(700+width/4, random(40, height-140))];
+
+
+draw = function() {
+    imageMode(CENTER);
+    rectMode(CENTER);
+    textAlign(CENTER);
+    background(19, 48, 135);
+    for (var g = 1; g < grassXs.length; g++) {
+        //image(getImage("cute/GrassBlock"), grassXs[g], height-50, 40, 100);
+        grassXs[g]-=dart.vx;                         
+        if (grassXs[g] < -40) {
+            grassXs[g] = 759;
+        }
+    }
+    for (var w = 0; w < walls.length; w++) {
+        walls[w].draw(dart);
+        if (walls[w].x < 0) {
+            walls[w].x = width;
+            walls[w].y = random(80, height-175);
+        }
+        for (var s = 0; s < sticks.length; s++) {
+            sticks[s].draw(dart);
+            if (sticks[s].x < 0 && random(0, 0.8) < 0.01) {
+                sticks[s].x = width;
+                sticks[s].y = random(100, height-140);
+            }
+            dart.survived(walls[w], sticks[s]);
+        }
+    }
+    //dart.draw();
+
+};
