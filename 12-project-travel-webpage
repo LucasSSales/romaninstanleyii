@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Project Travel webpage</title>
+        <style>
+            body {
+                background-color: rgb(0, 0, 0);
+            }
+            p {
+                color: white;
+            }
+            #heading-1 { 
+                    color: gold;
+            }
+            .ordered-lists {
+                color: blue;
+            }
+            .red-link {
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+    
+        <h1 id='heading-1'>Top Ten Places To Visit In California</h1>
+        
+        <ol class='ordered-lists'>
+            <h3><li>Yosemite Nation Park</li></h3>
+            <img src='https://upload.wikimedia.org/wikipedia/commons/f/fc/Yosemite_Valley_from_Wawona_Tunnel_view,_vista_point..JPG' width='710'>
+            <p>Yosemite National Park is set within California’s Sierra Nevada mountains. It’s famed for its giant, ancient sequoias, and for Tunnel View, the iconic vista of towering Bridalveil Fall and the granite cliffs of El Capitan and Half Dome. In Yosemite Village are shops, restaurants, the Yosemite Museum and the Ansel Adams Gallery, offering prints of the photographer’s renowned black-and-white landscapes of the area.<br><p class='red-link'>http://www.nps.gov/yose/index.htm</p>
+            
+            <h3><li>Golden Gate Bridge</li></h3>
+            <img src='https://upload.wikimedia.org/wikipedia/commons/0/0c/GoldenGateBridge-001.jpg' width='710'>
+            <p>The Golden Gate Bridge is a suspension bridge spanning the Golden Gate strait, the one-mile-wide, three-mile-long channel between San Francisco Bay and the Pacific Ocean. The structure links the U.S. city of San Francisco, on the northern tip of the San Francisco Peninsula, to Marin County, bridging both U.S. Route 101 and California State Route 1 across the strait. The bridge is one of the most internationally recognized symbols of San Francisco, California, and the United States. It has been declared one of the Wonders of the Modern World by the American Society of Civil Engineers.<br>The Frommers travel guide considers the Golden Gate Bridge "possibly the most beautiful, certainly the most photographed, bridge in the world". It opened in 1937 and was, until 1964, the longest suspension bridge main span in the world, at 4,200 feet.</p>
+            
+            <h3><li>Great America</li></h3>
+            <img src='https://upload.wikimedia.org/wikipedia/commons/b/be/Invertigo_At_Great_America.jpg' width='710'>
+            <p>California's Great America is a 100-acre amusement park located in Santa Clara, California. Owned and operated by Cedar Fair Entertainment Company, it originally opened as Marriott's Great America in 1976 as one of two parks built and operated by the Marriott Corporation. The park has appeared in 1994 films Beverly Hills Cop III and Getting Even with Dad and features over 40 rides and attractions. One of its most notable attractions, Gold Striker, has been featured as a top-ranked wooden roller coaster in Amusement Today's annual Golden Ticket Awards publication.</p>
+            
+            <h3><li>Six Flags Magic Mountain</li></h3>
+            <img src='https://upload.wikimedia.org/wikipedia/commons/c/cd/Six_Flags_Magic_Mountain_overview.jpg' width='710'>
+            <p>Six Flags Magic Mountain is a 262-acre theme park located in Valencia, California, north of Los Angeles. It opened on May 30, 1971, as Magic Mountain, a development of the Newhall Land and Farming Company. In 1979, Six Flags purchased the park and added the name "Six Flags" to the park's title.<br>With 19 roller coasters, Six Flags Magic Mountain holds the world record for most roller coasters in an amusement park. In 2013, the park had an estimated 2.9 million visitors ranking it fifth in attendance among seasonal amusement parks in North America.</p>
+            
+            <h3><li>Redwood National and State Parks</li></h3>
+            <img src='https://upload.wikimedia.org/wikipedia/commons/d/de/Redwood_National_Park,_fog_in_the_forest.jpg' width='710'>
+            <p>The Redwood National and State Parks (RNSP) are old-growth temperate rainforests located in the United States, along the coast of northern California. Comprising Redwood National Park (established 1968) and California's Del Norte Coast, Jedediah Smith, and Prairie Creek Redwoods State Parks (dating from the 1920s), the combined RNSP contain 133,000 acres. Located entirely within Del Norte and Humboldt Counties, the four parks, together, protect 45% of all remaining coast redwood (Sequoia sempervirens) old-growth forests, totaling at least 38,982 acres. These trees are the tallest and one of the most massive tree species on Earth. In addition to the redwood forests, the parks preserve other indigenous flora, fauna, grassland prairie, cultural resources, portions of rivers and other streams, and 37 miles of pristine coastline.<br>In 1850, old-growth redwood forest covered more than 2,000,000 acres of the California coast. The northern portion of that area, originally inhabited by Native Americans, attracted many lumbermen and others turned gold miners when a minor gold rush brought them to the region. Failing in efforts to strike it rich in gold, these men turned toward harvesting the giant trees for booming development in San Francisco and other places on the West Coast. After many decades of unrestricted clear-cut logging, serious efforts toward conservation began. By the 1920s the work of the Save-the-Redwoods League, founded in 1918 to preserve remaining old-growth redwoods, resulted in the establishment of Prairie Creek, Del Norte Coast, and Jedediah Smith Redwoods State Parks among others. Redwood National Park was created in 1968, by which time nearly 90% of the original redwood trees had been logged. The National Park Service (NPS) and the California Department of Parks and Recreation (CDPR) administratively combined Redwood National Park with the three abutting Redwood State Parks in 1994 for the purpose of cooperative forest management and stabilization of forests and watersheds as a single unit.<br>The ecosystem of the RNSP preserves a number of threatened animal species such as the tidewater goby, Chinook salmon, northern spotted owl, and Steller's sea lion. In recognition of the rare ecosystem and cultural history found in the parks, the United Nations designated them a World Heritage Site on September 5, 1980 and an International Biosphere Reserve on June 30, 1983.</p>
+            
+            <h3><li>Chinatown</li></h3>
+            <img src='https://upload.wikimedia.org/wikipedia/commons/b/b0/1_chinatown_san_francisco_arch_gateway.JPG' width='710'>
+            <p>The Chinatown centered on Grant Avenue and Stockton Street in San Francisco, California, is the oldest Chinatown in North America and the largest Chinese community outside Asia. It is the oldest of the four notable Chinatowns in the city. Since its establishment in 1848, it has been highly important and influential in the history and culture of ethnic Chinese immigrants in North America. Chinatown is an enclave that continues to retain its own customs, languages, places of worship, social clubs, and identity. There are two hospitals, numerous parks and squares, a post office, and other infrastructure. While recent immigrants and the elderly choose to live in here because of the availability of affordable housing and their familiarity with the culture, the place is also a major tourist attraction, drawing more visitors annually than the Golden Gate Bridge.</p>
+            
+            <h3><li>Death Valley National Park</li></h3>
+            <img src='https://upload.wikimedia.org/wikipedia/commons/2/21/Death_Valley_Zabriskie_Point.jpg' width='710'>
+            <p>Death Valley is a desert valley located in Eastern California. It is the lowest, driest, and hottest area in North America.<br>Death Valley's Badwater Basin is the point of the lowest elevation in North America, at 282 feet below sea level. This point is 84.6 miles east-southeast of Mount Whitney, the highest point in the contiguous United States with an elevation of 14,505 feet. Death Valley's Furnace Creek holds the record for the highest reliably recorded air temperature in the world, 134 °F on July 10, 1913.<br>Located near the border of California and Nevada, in the Great Basin, east of the Sierra Nevada mountains, Death Valley constitutes much of Death Valley National Park and is the principal feature of the Mojave and Colorado Deserts Biosphere Reserve. It is located mostly in Inyo County, California. It runs from north to south between the Amargosa Range on the east and the Panamint Range on the west; the Sylvania Mountains and the Owlshead Mountains form its northern and southern boundaries, respectively. It has an area of about 3,000 sq mi. The highest point in Death Valley itself is Telescope Peak in the Panamint Range, which has an elevation of 11,043 feet.</p>
+            
+            <h3><li>Union Square</li></h3>
+            <img src='https://upload.wikimedia.org/wikipedia/commons/a/a2/Union_Square_-_San_Francisco.jpg' width='710'>
+            <p>Union Square is a 2.6-acre public plaza bordered by Geary, Powell, Post and Stockton Streets in downtown San Francisco, California. "Union Square" also refers to the central shopping, hotel, and theater district that surrounds the plaza for several blocks. The area got its name because it was once used for rallies and support for the Union Army during the American Civil War, earning its designation as a California Historical Landmark. Today, this one-block plaza and surrounding area is one of the largest collections of department stores, upscale boutiques, gift shops, art galleries, and beauty salons in the United States, making Union Square a major tourist destination, a vital, cosmopolitan gathering place in downtown San Francisco, and one of the world's premier shopping districts. Grand hotels and small inns, as well as repertory, off-Broadway, and single-act theaters also contribute to the area's dynamic, 24-hour character.</p>
+            
+            <h3><li>California Academy of Sciences</li></h3>
+            <img src='https://upload.wikimedia.org/wikipedia/commons/0/02/California_Academy_of_Sciences_pano.jpg' width='710'>
+            <p>The California Academy of Sciences is a natural history museum in San Francisco, California, that is among the largest museums of natural history in the world, housing over 26 million specimens. The Academy began in 1853 as a learned society and still carries out a large amount of original research, with exhibits and education becoming significant endeavors of the museum during the 20th century.<br>Completely rebuilt in 2008, the building covers 400,000 square feet and is among the newest natural history museums in the United States. The primary building in Golden Gate Park reopened on September 27, 2008.</p>
+            
+            <h3><li>Joshua Tree National Park</li></h3>
+            <img src='https://upload.wikimedia.org/wikipedia/commons/5/5c/Giant_Marbles_in_Joshua_Tree_National_Park.jpg' width='710'>
+            <p>Joshua Tree National Park is located in southeastern California. Declared a U.S. National Park in 1994 when the U.S. Congress passed the California Desert Protection Act (Public Law 103-433), it had previously been a U.S. National Monument since 1936. It is named for the Joshua trees (Yucca brevifolia) native to the park. It covers a land area of 790,636 acres – an area slightly larger than the state of Rhode Island. A large part of the park, some 429,690 acres, is a designated wilderness area. Straddling the San Bernardino County/Riverside County border, the park includes parts of two deserts, each an ecosystem whose characteristics are determined primarily by elevation: the higher Mojave Desert and lower Colorado Desert. The Little San Bernardino Mountains run through the southwest edge of the park.</p>
+            
+        </ol>
+        
+        <h6 class='red-link'>All images and most text is copyrighted by https://en.wikipedia.org</h6>
+
+    </body>
+</html>
