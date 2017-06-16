@@ -1,0 +1,123 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var Plot = function(y, hours, dates){
+    this.y = y;
+    this.hours = hours;
+    this.date = dates;
+    this.total = 0; 
+    for (var i in this.y) {this.total += this.y[i]; }
+    this.mean = this.total/this.y.length;
+};
+
+Plot.prototype.execute = function() {
+    for (var i=0; i<this.y.length-1; i++) {
+       strokeWeight(5);
+       if (i===this.mean) {
+           stroke(255, 0, 0);
+       }
+       point(65+i*9, 450-this.y[i]*30.4);
+       stroke(0);
+       strokeWeight(1);
+       line(65+i*9, 450-this.y[i]*30.4, 65+(i+1)*9, 450-this.y[i+1]*30.4);
+    }//thanks to Eric Sursa
+
+//y axis
+for (var j = 0; j < 14; j++) {
+    strokeWeight(2);
+    line(60, 50, 60, 450);
+    line(57, 450-j*30.5, 63, 450-j*30.5);
+    fill(0);
+    textAlign(CENTER);
+    text(this.hours[j]+" hours", 30, 450-j*30.2);
+    text("Amount of Sleep", 10, 15, 50, 60);
+}
+//x axis
+for (var k = 0; k < 8; k++) {
+    line(60, 450, 450, 450);
+    text(this.date[k], 66+k*63, 470); 
+    text("Date", 250, 490);
+}
+{
+    textSize(18);
+    text("How Much Sleep Do I Get?", 250, 30);
+    textSize(11);
+    stroke(255, 0, 0);
+    strokeWeight(5);
+    point(10, 490);
+    text("= average amount", 65, 493);
+}
+};
+
+var plot = {
+    y: [10.75, 12.5, 9.6, 11, 11, 11, 10.5, 11.5, 8.5, 5.1, 8.5, 7.75, 5.1, 8.1, 12.2, 9.3, 4.1, 5.1, 4.75, 5.1, 4.1, 12, 9.1, 2.1, 6.8, 8, 5.1, 6, 9.3, 11, 0, 7.9, 5.5, 8, 4.1, 7.2, 9.4, 4.6, 5.9, 8, 5.6, 5.6, 12, 10.5, 1.6],
+    hours: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+    date: ["4/1", "4/7", "4/12", "4/17", "4/22", "4/27", "5/3", "5/9", "5/15"],
+    total: 0,
+    
+};
+
+var p = new Plot(plot.y, plot.hours, plot.date);
+p.execute();
+
+
+
+/*
+var Button = function(x, y, w, h) {
+    this.x = x;
+    this.y = y;
+    this.width = w;
+    this.height = h;
+};
+
+Button.draw = function() {
+    rect(this.x, this.y, this.width, this.height);
+};
+
+Button.function = function() {
+    if (!(mouseX < this.x+this.width && mouseX > this.x && mouseY < this.y + this.height && mouseY > this.y && mouseIsPressed)) {
+        Button.draw();
+    } else {
+        scene = 
+    }
+};
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
