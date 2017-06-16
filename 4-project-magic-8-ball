@@ -1,0 +1,114 @@
+
+var answer = floor(random(1, 6));
+
+if (answer < 2) {
+    var y = 197;
+    var speed = 2;
+    draw = function() {
+        fill(0, 0, 0);
+        ellipse(200, 200, 375, 375);
+        fill(60, 0, 255);
+        triangle(200, 104, 280, 280, 120, 280);
+        y = y + speed;
+        if (y > 202) {
+            speed = -1.5;
+        }
+        if (y < 196) {
+            speed = 1.5;
+        }
+        fill(218, 255, 82);
+        text("ASK", 185, y);
+        text("SOMEBODY", 166, y + 31);
+        text("WHO CARES", 163, y + 57);
+    };
+    
+} else if (answer < 3) {
+    var x = 166;
+    var speed = 1;
+    draw = function() {
+        fill(0, 0, 0);
+        ellipse(200, 200, 375, 375);
+        fill(60, 0, 255);
+        triangle(200, 104, 280, 280, 120, 280);
+        x = x + speed;
+        if (x > 200) {
+            speed = -1;
+        }
+        if (x < 165) {
+            speed = 1;
+        }
+        fill(255, 152, 61);
+        text("DUMB", x, 200);
+        text("QUESTION.", x - 14, 221);
+        text("ASK", x + 3, 238);
+        text("ANOTHER", x - 10, 258);
+    };
+    
+} else if (answer < 4) {
+    var y = 182;
+    var speed = 1; 
+    draw = function() {
+        fill(0, 0, 0);
+        ellipse(200, 200, 375, 375);
+        fill(60, 0, 255);
+        triangle(200, 104, 280, 280, 120, 280);
+        y = y + speed;
+        if (y > 185) {
+            speed = -1;
+        }
+        if (y < 179) {
+            speed = 1;
+        }
+        fill(255, 238, 0);
+        text("YOU", 188, y);
+        text("WOULD BE", 170, y + 21);
+        text("BETTER OFF", 166, y + 42);
+        text("GOING TO MEDICAL", 144, y + 63);
+        text("SCHOOL", 176, y + 84);
+    };
+    
+} else if (answer < 5) {
+    var x = 183;
+    var speed = 0.5;
+    draw = function() {
+        fill(0, 0, 0);
+        ellipse(200, 200, 375, 375);
+        fill(60, 0, 255);
+        triangle(200, 104, 280, 280, 120, 280);
+        x = x + speed;
+        if (x > 185.5) {
+            speed = -0.5;
+        }
+        if (x < 180.5) {
+            speed = 0.5;
+        }
+        fill(225, 205, 235);
+        text("DUDE", x, 182);
+        text("I'M JUST", x - 8, 205);
+        text("A COMPUTER", x - 20, 232);
+        text("PROGRAM", x - 12, 256);
+    };
+    
+} else if (answer < 6) {
+    var y = 182;
+    speed = 0.9;
+    draw = function() {
+        fill(0, 0, 0);
+        ellipse(200, 200, 375, 375);
+        fill(60, 0, 255);
+        triangle(200, 104, 280, 280, 120, 280);
+        y = y + speed;
+        if (y > 185) {
+            speed = -0.5;
+        }
+        if (y < 179) {
+            speed = 0.5;
+        }
+        fill(255, 255, 255);
+        text("SORRY,", 179, y);
+        text("OUT OF", 177, y + 23);
+        text("PSYCHIC", 172, y + 48);
+        text("COVERAGE RANGE", 144, y + 73);
+    };
+    
+}
