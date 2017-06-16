@@ -1,0 +1,38 @@
+var xPositions = []; //initial x positions for, I think, 20 snowflakes  
+var yPositions = []; //initial y positions for 20 snowflakes
+var precipitationColor = []; //the array made to store about 20 different, random colors for each snowflake 
+var fallVelocity = []; 
+
+for (var amt = 0; amt < 550; amt++) {
+    xPositions.push(random(0, 400)); 
+    yPositions.push(random(0, -100)); 
+    precipitationColor.push(color(floor(random(1, 51)), floor(random(51, 161)), floor(random(201, 256))));
+    fallVelocity.push(random(4, 11));
+}
+
+draw = function() {
+    background(204, 247, 255);
+    noStroke();
+    
+    
+    //sets y of all snowflakes into motion
+    for (var i = 0; i < xPositions.length; i++) { //counter variable for first two arrays
+        fill(precipitationColor[i]); 
+        ellipse(xPositions[i], yPositions[i], 10, 15); 
+        yPositions[i] += fallVelocity[i]; 
+            
+        if (yPositions[i] > 410) {
+        yPositions[i] -= 400 + random(0, 400);//resets y of each, if they exceed 400, to a random spot in a range
+        }
+    }
+    //window
+    fill(145, 107, 107);
+    rect(185, 0, 30, height);
+    rect(0, 185, width, 30);
+    rect(0, 0, 15, height);
+    rect(385, 0, 15, height);
+    rect(0, 0, width, 15);
+    rect(0, 385, width, 15);
+};
+
+
