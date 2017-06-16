@@ -1,0 +1,30 @@
+//Parabola No.1
+//5 months before november 2016
+{
+
+//This is a simple formula for a parabola that I got from http://www.coolmath.com/algebra/11-graphing-quadratics-parabolas/01-intro-to-graphing-parabolas-02
+//What makes it original is that I solved why y=x^2 doesn't make it a parabola in programming. 
+//I came up with the idea of exponent z. 
+//See its effect in my code below.
+
+
+//starting x position is 1, higher values make y start out much larger as x is ever-increasing and the exponent for x in y=x^z is too high to keep the arc summit in view
+var x = 1; 
+//this starts the exponent of x in y=x^z at the highest value 2, after which it starts decreasing. 
+var z = 2;  
+
+//this fuction call allows new rectangles to be drawn (at the new coordinates) 
+draw = function() {
+    //everything you see depends on this change in the x position as it affects what z is the exponent of, and being the last variable that I annotate, the interconnectedness of all these variable creates this one of infinite amount of geometric shapes. 
+    x+=1; 
+    
+    //My idea: let the exponent be a variable that starts out as a square and decreases by 1/100 at a time. This not only stops the y increase as the exponent decreases into negatives but becomes so small of a fraction of x that y starts decreasing too. I think that the large value of x and the very low value of y even out to produce the unchanging line after the parabola. 
+    z-=0.01; 
+    //y position is that of x position to the power of z
+    var y = Math.pow(x, z);
+
+    //draws each rectangle at the now new coordinates of x and y FOREVER.
+    rect(150+x, y, 2, 2);
+};
+//...And I am in the seventh grade. Yipee!
+}
