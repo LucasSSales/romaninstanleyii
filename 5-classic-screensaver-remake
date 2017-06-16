@@ -1,0 +1,26 @@
+var xPos = random(68, 332);
+var yPos = random(68, 332);
+var xSpeed = 1;
+var ySpeed = 1;
+var ballSize;
+draw = function() {
+    background(xPos/2 + 50, yPos/2 + 50, yPos/2 + 50);
+    noStroke();
+    fill(yPos/2, xPos/2, 0);
+    ballSize = random(60, 68);
+    xPos = xPos + xSpeed;
+    yPos = yPos - ySpeed;
+    if (xPos < 0 + ballSize / 2) {
+        xSpeed = 18;
+    } 
+    if (xPos > 400 - ballSize / 2) {
+        xSpeed = -15;
+    }
+    if (yPos < 0 + ballSize / 2) {
+        ySpeed = -9;
+    }
+    if (yPos > 400 - ballSize / 2) {
+        ySpeed = 12;
+    }
+    ellipse(xPos, yPos, ballSize, ballSize);
+};
