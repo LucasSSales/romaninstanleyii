@@ -1,0 +1,98 @@
+var currentScene;
+//arranges all Class(room) students instances
+var Class = function(multiple_strings_as_array_values) { 
+    this.students = multiple_strings_as_array_values;    //Help from @cire3791
+    this.background1 = random(0, 55);
+    this.background2 = random(0, 155);
+    this.background3 = random(0, 255);
+    this.population = this.students.length;
+};
+Class.prototype.group = function(amt) {
+    background(this.background1, this.background2, this.background3);
+    fill(255); 
+    rect(80, 70, 140, 350);
+    rect(280, 70, 140, 350);
+    fill(0);
+    textSize(19);
+    for (var per = 0; per < this.population/amt; per++) {
+        text("• "+this.students.splice(random(0, this.students.length),1), 100, 100+per*30);
+    }
+    for (var per = 0; per < this.population/amt; per++) {
+        text("• "+this.students.splice(random(0, this.students.length),1), 300, 100+per*30);
+    }
+    fill(255, 0, 0);
+    text("Group A: ", 100, 50);
+    text("Group B: ", 300, 50);
+};
+
+//scenes containing instances and buttons
+var menu = function() {
+    currentScene = 1; 
+    
+    background(random(180, 255), random(180, 255), random(0, 255));
+    fill(random(180, 255), random(180, 255), random(0, 255));
+    stroke(random(0, 255), random(0, 255), random(0, 255));
+    strokeWeight(5);
+    rect(75, 275, 100, 50);
+    rect(75, 350, 100, 50);
+    
+    fill(0);
+    textFont(createFont("monospace"), 50);
+    text("STUDENT \n\tGROUPER", 133, 130);
+    textFont(createFont("sans-serif"), 19);
+    text("McGough\nPeriod 4", 85, 298);
+    text("Chandler\nPeriod 1", 85, 371);
+};
+//shuffle and exit to menu buttons
+var buttons = function() {
+    fill(random(180, 255), random(180, 255), random(0, 255));
+    rect(100, 430, 300, 50);
+    textFont(createFont("fantasy"), 19);
+    rect(15, 10, 65, 35);
+    fill(255, 0, 0);
+    text("MENU", 20, 35);
+    fill(23, 8, 240);
+    text("SHUFFLE!", 200, 460);
+};
+var op1 = function() {
+    currentScene = 2;
+    //declare variable here so that every time op1 is called in the function below, this.population above is renewed and you're not dealing with leftovers of declaring variable outside of op1
+    var per4 = new Class(["Anissa W", "Clara H", "Cora M", "Dylan G", "Ella B", "Lena J", "Lucy H", "Maren T", "Maggie B", "Mason B", "Michael B", "Nathan T", "Nicole F", "Olivia W", "Rejina R", "Roman M", "Sophia E", "Sydney S", "Tomo W", "Steven F", "Devin L", "Charlie P"]);
+//var per1 = new Class(["Hello", "world", "Roman"]);
+    textFont(createFont("sans-serif"), 19);
+    per4.group(2);
+    buttons();
+};
+var op2 = function() {
+    currentScene = 3;
+    var per1 = new Class(["Roman M", "Student 2", "Student 3", "Student 4", "Student 5", "Student 6", "Student 7", "Student 8", "Student 9", "Student 10", "Student 11", "Student 12", "Student 13", "Student 14", "Student 15", "Student 16", "Student 17", "Student 18", "Student 19", "Student 20"]);
+    textFont(createFont("sans-serif"), 19);
+    per1.group(2);
+    buttons();
+};
+menu();
+mouseClicked = function() {
+    if (currentScene === 1) {
+        if (mouseX > 75 && mouseX < 175 && mouseY > 275 && mouseY < 325) {
+            op1();
+        } else if (mouseX > 75 && mouseX < 175 && mouseY > 350 && mouseY < 400) {
+            op2();
+        } else {
+            menu();
+        }
+    } else if (currentScene === 2) {
+        if (mouseX > 100 && mouseX < 400 && mouseY > 430) {
+            op1();
+        }
+        else if (mouseX > 15 && mouseX < 80 && mouseY > 10 && mouseY < 45) {
+            menu();
+        }
+    } else if (currentScene === 3) {
+        if (mouseX > 100 && mouseX < 400 && mouseY > 430) {
+            op2();
+        }
+        else if (mouseX > 15 && mouseX < 80 && mouseY > 10 && mouseY < 45) {
+            menu();
+        }
+    }
+};
