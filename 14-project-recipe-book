@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Project Recipe book</title>
+        <meta charset="utf-8">
+        <style>
+            body {
+                background-color: red;
+            }
+            .recipe-name {
+                color: lightyellow;
+            }
+            h1 {
+                color: aqua;
+            }
+            h2 {
+                color: lightgreen;
+            }
+            ul {
+                background-color: darkgray;
+                color: white;
+            }
+            tr { /*  This works because it doesn't just select the <td> or <th> but every row's data and highlights it :)  */
+                background-color: yellow;
+            }
+            h4 {
+                background-color: darkorange;
+                color: beige;
+            }
+            ol {
+                background-color: orange;
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+       
+        <h1>The Mirov Recipe Book</h1>
+        
+        <h2>Contents</h2>
+        
+        <ol>
+            <li><a href="#R1">Vegetable Chicken Barley Soup</a></li>
+            <li><a href='#R2'>Fried Rice</a></li>
+            <li><a href='#R3'>Brazilian Coconut Truffle</a></li>
+        </ol>
+        
+        <h3 class='recipe-name' id='R1'>Vegetable Chicken Barley Soup
+</h3>
+
+        <img src='https://upload.wikimedia.org/wikipedia/commons/3/32/Minestrone_soup.jpg' width='680'>
+        
+        <ul>
+            <li>Time: 85 m</li>
+            <li>Servings: 4</li>
+        </ul>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Ingredients</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>olive oil<br>medium onion<br>celery<br>sliced carrots<br>cooked chicken (cut into bite size pieces)<br>chicken broth<br>diced tomatoes<br>barley<br>bay leaf<br>ground thyme<br>Salt and pepper to taste<br>frozen peas<br>frozen corn</td>
+                    <td>2 tablespoons<br>1<br>3 stalks<br>1½ cup<br>2 cups<br>8 cups<br>1 14.5 ounce can<br>½ cup<br>1<br>¼ teaspoon<br><br>½ cup<br>½ cup </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h4>Instructions</h4>
+            <ol><li>In a large Dutch oven heat the oil and saute onions, celery, and carrots for about 10 minutes or until they are starting to get tender; stirring occasionally.<li>When you are finished with sauteing the vegetables add the broth, cooked chicken, canned tomatoes, barley, bay leaf, thyme, salt, and pepper. Bring the soup to a boil, once it starts to boil turn down to medium-low and simmer for about 1 hour or until the barley and vegetables are tender. Add the frozen peas and corn, cook an addition 5 to 10 minutes. Serve</ol>
+            
+        <h3 class='recipe-name' id='R2'>Fried Rice</h3>
+        
+        <img src='https://upload.wikimedia.org/wikipedia/commons/b/b5/Nasi_goreng_Solaria_Kuta.JPG' width='680'>
+        
+        <ul>
+            <li>Time: 15 m</li>
+            <li>Servings: 4</li>
+        </ul>
+        
+        <table>
+            <head>
+                <tr>
+                    <th>Ingredients</th>
+                    <th>Quantity</th>
+                </tr>
+            </head>
+            <body>
+                <tr>
+                    <td>safflower or canola oil (separated)<br>whole green onions (sliced)<br>fresh garlic (minced)<br>large eggs (lightly beaten)<br>sea salt & fresh ground pepper (to taste)<br>steamed rice<br>frozen peas & carrots (cooked and drained)<br>soy sauce / tamari</td>
+                    <td>2 tablespoons<br>2<br>1 clove<br>2<br><br>2 cups<br>1 cup<br>2 tablespoons</td>
+                </tr>
+            </body>
+        </table>
+        
+        <h4>Instructions</h4>
+        
+        <ol>
+            <li>Heat 1 Tablespoon of oil in a wok over high heat.<li>Add green onions and garlic. Stir and cook for one minute until fragrant.<li>Add beaten eggs and scramble until set.<li>Push eggs to outside edge of the wok, and 1 more Tablespoon of oil.<li>Add the rice and stir-fry to combine with the eggs.<li>Add the peas and carrots and the soy sauce, continue to stir-fry until heated through.
+        </ol>
+        
+        <h3 class='recipe-name' id='R3'>Brazilian Coconut Truffle</h3>
+        
+        <img src='https://upload.wikimedia.org/wikipedia/commons/2/2c/Chokladbollar.jpg' width='680'>
+        
+        <ul>
+            <li>Time: 65 m
+            <li>Servings: 20
+        </ul>
+        
+        <table>
+            <head>
+                <tr>
+                    <th>Ingredients
+                    <th>Quantity
+                </tr>
+            </head>
+            <body>
+                <tr>
+                    <td>good quality coconut milk (full fat)<br>raw honey<br>shredded coconut (unsweetened)<br>butter
+½ tsp vanilla extract</td>
+                    <td>1 can<br>3 tbs<br>½ cup<br>1 tbs</td>
+                </tr>
+            </body>
+        </table>
+        
+        <h4>Instructions</h4>
+        
+        <ol>
+            <li>Mix the coconut milk and the honey in a sauce pan
+            <li>Bring to a boil then simmer it for about 2 hours, stirring the mixture once in a while. You will notice the mixture getting thicker and after 2 hours it should be thick enough so that it does not run off the spoon easily
+            <li>Add the butter, vanilla and the shredded coconut and cook for about 5 minutes stirring constantly so it does not burn. When the mixture starts to release off the bottom of the pan and has a very thick consistency remove from the stove and let it cool
+            <li>Place it in the fridge for about 2 hours. It is important it is cool before you roll it.
+            <li>Remove from fridge, line your hands with butter and start rolling the truffles into balls
+            <li>Roll each ball in shredded coconut
+            <li>Recipe makes about 20 balls
+        </ol>
+        
+    <p><em>All credits to <a href="http://www.yummly.com/">Yummly<sup>TM</sup></a></em><br><em>Image courtesy of <a href='https://www.wikipedia.org/'>Wikipedia</a></em></p>
+<!-- The <sup></sup> tag above superscripts the text inside  -->
+    
+    </body>
+</html>
