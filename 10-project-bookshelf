@@ -1,0 +1,544 @@
+fill(117);
+noStroke();
+rect(48, 0, 310, height);
+for (var j = 0; j < 67; j+=2) {
+    for (var i = 0; i < 50; i++) {
+        strokeWeight(3);
+        stroke(0, 201, 40);
+        point(57 + i * 6, 0 + j * 6);
+    }
+}
+for (var j = 1; j < 67; j+=2) {
+    for (var i = 1.5; i < 51; i++) {
+        strokeWeight(3);
+        stroke(0, 201, 40);
+        point(45 + i * 6, 0 + j * 6);
+    }
+}
+var app = [
+    {
+        name: "Messages",
+        cover: function() {
+            fill(255);
+            noStroke();
+            ellipse(103, 55, 34, 28);
+            triangle(97, 55, 105, 66, 91, 74);
+        },
+        outline: color(71, 207, 25),
+        fill: color(60, 204, 12),
+        recommendation: false
+    }, //messages
+    {
+        name: "Calendar",
+        cover: function() {
+            fill(194, 4, 4);
+            noStroke();
+            rect(143, 37, 51, 7);
+            arc(168.5, 38, 51, 20, 180, 360);
+            fill(255);
+            textSize(10);
+            text('Monday', 144, 35, 50, 20);
+            textSize(36);
+            fill(0);
+            text('6', 144, 48, 50, 50);
+            
+        },
+        outline: color(255),
+        fill: color(255),
+        recommendation: true
+    },
+    {
+        name: 'Photos',
+        cover: function() {
+            noStroke();
+            fill(255, 217, 0);
+            ellipse(235, 53, 36, 34);
+            fill(82, 63, 39);
+            ellipse(235, 53, 13, 12);
+            fill(48, 138, 0);
+            rect(233, 70, 5, 12);
+            rotate(20);
+            ellipse(241, -9, 25, 4);
+            rotate(-20);
+        },
+        outline: color(66, 252, 255),
+        fill: color(66, 252, 255),
+        recommendation: NaN
+    },
+    {
+        name: 'Camera',
+        cover: function() {
+            fill(48, 47, 48);
+            noStroke();
+            ellipse(299, 56, 33, 33);
+            fill(82, 82, 82);
+            ellipse(299, 56, 24, 24);
+            fill(69, 149, 230);
+            ellipse(299, 56, 16, 16);
+        },
+        outline: color(199),
+        fill: color(199, 199, 199),
+        recommendation: true
+    },
+    {
+        name: 'YouTube',
+        cover: function() {
+            fill(53, 89, 80);
+            noStroke();
+            rect(81, 98, 45, 38, 20);
+            for (var i = 0; i < 2; i++) {
+                fill(94, 33, 0);
+                ellipse(89 + i * 29, 138, 6, 6);
+            }
+        },
+        outline: color(94, 33, 0),
+        fill: color(224, 204, 156),
+        recommendation: true
+    }, //youtube
+    {
+        name: 'Stocks',
+        cover: function() {
+            stroke(255);
+            strokeWeight(1);
+            for (var i = 0; i < 2; i++) {
+                line(158 + i * 20, 97, 158 + i * 20, 143);
+            }
+            strokeWeight(2.5);
+            line(143, 125, 162, 116);
+            line(162, 116, 167, 131);
+            line(167, 131, 178, 107);
+            line(178, 107, 192, 114);
+        },
+        outline: color(5, 172, 255),
+        fill: color(5, 172, 255),
+        recommendation: true
+    },
+    {
+        name: 'Maps',
+        cover: function() {
+            noStroke();
+            fill(251, 255, 0);
+            rect(221, 95, 5, 51);
+            fill(255, 179, 0);
+            rect(208, 107, 51, 5.5);
+            fill(189, 189, 189);
+            rect(223, 127, 2, 14);
+            fill(255, 0, 0);
+            ellipse(223, 127, 8, 8);
+            rect(230, 104, 23, 5);
+            fill(18, 89, 255);
+            arc(242, 110, 24, 25, 0, 180);
+            fill(255);
+            textSize(9);
+            text('280', 232, 111, 20, 10);
+        },
+        outline: color(232),
+        fill: color(232, 232, 232),
+        recommendation: false
+    },
+    {
+        name: 'Weather',
+        cover: function() {
+            noStroke();
+            fill(255, 217, 0);
+            ellipse(299, 117, 25, 25);
+            fill(255);
+            textSize(12);
+            text('23˚', 285, 132, 30, 30);
+        },
+        outline: color(43, 184, 255),
+        fill: color(43, 184, 255),
+        recommendation: false
+    },
+    {
+        name: 'Notes',
+        cover: function() {
+            stroke(0, 0, 133);
+            strokeWeight(0.6);
+            for (var i = 0; i < 5; i++) {
+                line(78, 170 + i * 7, 128, 170 + i * 7);
+            }
+            line(80, 205, 125, 205);
+            
+            strokeWeight(0.65);
+            for (var i = 0; i < 2; i++) {
+                stroke(255, 0, 0);
+                line(86 + i * 3.5, 164, 86 + i * 3.5, 210);
+            }
+            noStroke();
+            fill(84, 52, 52);
+            rect(78, 167, 50, 4);
+            arc(103, 167, 48, 18, 180, 360);
+        },
+        outline: color(255, 235, 122),
+        fill: color(255, 235, 122),
+        recommendation: true
+    }, //notes
+    {
+        name: 'Reminders',
+        cover: function() {
+            strokeWeight(0.5);
+            rect(148.5, 168, 39, 34);
+            textSize(9.5);
+            fill(0, 0, 0);
+            text('milk', 159.5, 171, 25, 25);
+            text('eggs', 160.5, 182, 25, 25);
+            text('bread', 162, 193, 25, 25);
+            strokeWeight(0.3);
+            stroke(0, 0, 0);
+            for (var i = 0; i < 2; i++) {
+                line(148.5, 179.5 + i * 11.5, 148.5 + 39, 179.5 + i * 11.5);
+            }
+            stroke(255, 0, 0);
+            line(160, 168, 160, 202);
+            stroke(0);
+            strokeWeight(1.5);
+            for (var j = 0; j < 3; j++) {
+                line(155, 177 + j * 11.5, 158, 169 + j * 11.5);
+                line(155, 177 + j * 11.5, 152, 173 + j * 11.5);
+            }
+            noFill();
+            strokeWeight(3);
+            rect(144, 161, 48, 48, 15);
+        },
+        outline: color(0),
+        fill: color(255),
+        recommendation: true
+    }, //.
+    {
+        name: 'Clock',
+        cover: function() {
+            noStroke(); 
+            fill(255);
+            ellipse(233, 185, 40, 40);
+            fill(255, 0, 0);
+            ellipse(233, 185, 3, 3);
+            strokeWeight(1.0);
+            stroke(255, 0, 0);
+            line(233, 185, 233, 168);
+            noFill();
+            stroke(0);
+            ellipse(233, 185, 7, 7);
+            line(236.5, 185, 250, 185);
+            line(229.5, 185, 224, 179);
+            textSize(6.5);
+            fill(0);
+            textAlign(CENTER);
+            text('12', 233, 172);
+            text('6', 233, 203);
+            text('9', 217, 186);
+            text('3', 249, 186);
+            text('1', 242, 174);
+            text('7', 226, 201);
+            text('11', 224, 174);
+            text('5', 241, 201); 
+            text('2', 247.5, 178.9);
+            text('10', 219, 179);
+            text('4', 247, 196);
+            text('8', 219, 196);
+        },
+        outline: color(0, 0, 0),
+        fill: color(0),
+        recommendation: NaN
+    }, //.
+    {
+        name: 'Game Center',
+        cover: function() {
+            noStroke();
+            fill(237, 165, 50);
+            rect(297.5, 185, 11, 26);
+            rect(297.5, 185, 25, 11);
+            ellipse(311, 198.5, 25, 25);
+            fill(19, 189, 61);
+            rect(297.5, 185, 11, -26);
+            rect(297.5, 174, 25, 11);
+            ellipse(311, 171.5, 25, 25);
+            fill(0, 68, 255);
+            rect(297.5, 185, -11, 26);
+            rect(297.5, 185, -26, 11);
+            ellipse(285, 198.5, 25, 25);
+            fill(230, 171, 9);
+            rect(297.5, 185, -11, -26);
+            rect(297.5, 185, -26, -11);
+            fill(97, 61, 46);
+            rect(297.5, 185, -11, -13);
+            arc(287, 173.5, 30, 30, 180, 270);
+            stroke(255);
+            noFill();
+            ellipse(312, 198, 14, 14);
+            ellipse(312, 198, 3, 3);
+            line(312, 198, 303, 190);
+            fill(255);
+            strokeWeight(3);
+            line(307, 182, 318, 165);
+            ellipse(304, 170, 4, 4);
+            rotate(-20);
+            ellipse(202, 282, 12, 8);
+            ellipse(207, 255, 8, 2);
+            rotate(20);
+            ellipse(284, 173, 5, 15);
+            rect(280, 178, 7, 2);
+            triangle(283, 197, 288, 199, 283, 203);
+            triangle(283, 194, 282, 199, 278, 197);
+            noStroke();
+            fill(0, 68, 255);
+            ellipse(288, 195, 5, 5);
+        },
+        outline: color(100, 100, 10),
+        fill: color(100, 100, 0, 0),
+        recommendation: NaN
+    }, //.
+    {
+        name: 'Newsstand',
+        cover: function() {
+            for (var i = 0; i < 3; i++) {
+                var theOutline = lerpColor(color(112, 58, 22), color(191, 120, 61), 0.5);
+                fill(theOutline);
+                strokeWeight(0.1);
+                rect(83, 237.5 + i * 16, 41, 4);
+                fill(191, 120, 61);
+                quad(84, 237.5 + i * 16, 124, 237.5 + i * 16, 120, 226 + i * 16, 87, 226 + i* 16);
+            }
+        },
+        outline: color(191, 120, 61),
+        fill: color(112, 58, 22),
+        recommendation: NaN
+    },
+    {
+        name: 'iTunes',
+        cover: function() {
+            strokeWeight(3);
+            stroke(255);
+            noFill();
+            ellipse(168, 250, 36, 36);
+            fill(255);
+            for (var i = 0; i < 2; i++) {
+                ellipse(162 + i * 11, 257, 5, 3);
+                rect(175 - i * 11, 242.5, 0, 12);
+            }
+            quad(176, 243, 164, 245, 164, 244, 176, 242);
+        },
+        outline: color(207, 0, 207),
+        fill: color(207, 0, 207),
+        recommendation: false
+    },
+    {
+        name: 'App Store',
+        cover: function() {
+            noFill();
+            stroke(255);
+            strokeWeight(3);
+            line(235, 240, 242, 260);
+            line(232, 246, 226, 258);
+            ellipse(234, 250, 36, 36);
+            fill(255);
+            noStroke();
+            rect(225, 248, 18, 5);
+        },
+        outline: color(25, 140, 255),
+        fill: color(25, 140, 255),
+        recommendation: true
+    },
+    {
+        name: 'Settings',
+        cover: function() {
+            noFill();
+            strokeWeight(5);
+            arc(321, 273, 25, 25, 180, 270);
+            arc(276, 273, 25, 25, 270, 360);
+            arc(298, 257, 40, 40, 180, 360);
+            strokeWeight(2); 
+            fill(232);
+            quad(297, 257, 299, 255, 288, 244, 283, 243);
+            quad(297, 257, 299, 259, 313, 245, 311, 239);
+            quad(297, 257, 297, 260, 310, 262, 316, 259);
+            ellipse(298, 257, 19, 19);
+            triangle(294, 237, 302, 237, 298, 230);
+            triangle(284, 240, 288, 238, 282, 235);
+            triangle(315, 242, 311, 238, 316, 236);
+            triangle(299, 238.5, 309, 237.5, 307.7, 231);
+            triangle(289, 238.5, 295, 237.5, 290.5, 231);
+            triangle(276, 242.6, 283, 243.2, 279, 249);
+            triangle(312, 242.6, 321, 243.2, 317, 255);
+            triangle(279, 259, 284, 264, 286, 256);
+            triangle(284, 265, 287, 274, 293, 268);
+            triangle(300, 268, 305, 273, 310, 267);
+        },
+        outline: color(232, 232, 232),
+        fill: color(133, 133, 133),
+        recommendation: true
+    },
+    {
+        name: 'Phone',
+        cover: function() {
+            noFill();
+            stroke(255);
+            strokeWeight(6);
+            arc(135, 317, 102, 100, 126, 151);
+            noStroke();
+            fill(255);
+            arc(111, 350, 25, 25, 26, 133);
+            arc(99, 338, 25, 25, 141, 240);
+        },
+        outline: color(58, 179, 18),
+        fill: color(56, 184, 13),
+        recommendation: false
+    },
+    {
+        name: 'Mail',
+        cover: function() {
+            noStroke();
+            fill(255);
+            rect(149, 333, 40, 25);
+            stroke(0, 0, 0);
+            strokeWeight(1);
+            line(150, 334, 169, 350);
+            line(169, 350, 188, 334);
+            line(150, 357, 163, 345);
+            line(175, 345, 188, 357);
+        },
+        outline: color(61, 155, 255),
+        fill: color(61, 155, 255),
+        recommendation: NaN
+    },
+    {
+        name: 'Safari',
+        cover: function() {
+            fill(255);
+            textSize(10);
+            var compass = ['N', 'S', 'W', 'E'];
+            for (var i = 2; i < compass.length; i++) {
+                for (var j = 0; j < compass.length - 2; j++) {
+                    text(compass[j], 233, 330 + j * 37);
+                    text(compass[i], 141 + i * 37, 349);
+                }
+            }
+            noFill();
+            stroke(255);
+            ellipse(234, 345, 10, 10);
+            line(228, 345, 222, 345);
+            line(240, 345, 246, 345);
+            line(234, 338, 234, 334);
+            line(234, 351, 234, 356);
+            line(239, 350, 241, 352);
+            line(229, 340, 227, 338);
+            fill(255);
+            triangle(233, 344, 235, 346, 218, 363);
+            stroke(255, 0, 0);
+            fill(255, 0, 0);
+            triangle(233, 344, 235, 346, 252, 326);
+        },
+        outline: color(66, 157, 255),
+        fill: color(66, 157, 255),
+        recommendation: false
+    },
+    {
+        name: 'Music',
+        cover: function() {
+            fill(128, 55, 0);
+            quad(287, 336, 287, 345, 310, 335, 310, 326);
+            stroke(128, 55, 0);
+            rect(289, 342, 1, 15); 
+            rect(307, 333, 1, 18);
+            ellipse(305, 354, 8, 5);
+            ellipse(287, 358, 8, 5);
+        },
+        outline: color(237, 103, 0),
+        fill: color(237, 103, 0),
+        recommendation: NaN
+    }
+];
+var y = 30;
+var x = 77.5;
+//the exciting part
+for (var i = 0; i < app.length; i++) {
+    fill(app[i].fill);
+    strokeWeight(2);
+    stroke(app[i].outline);
+    rect(x, y, 50, 50, 15);
+    
+    app[i].cover();
+    
+    fill(255);
+    textSize(13);
+    textAlign(CENTER, BASELINE);
+    text(app[i].name, x - 15, y + 52, 80, 20);
+    
+    if (app[i].recommendation === true) {
+        imageMode(CENTER);
+        image(getImage("space/star"), x + 26, y + 48, 20, 20);
+    }
+    
+    x += 65;
+    if (x > 300) {
+        x = 77.5;
+        y+= 65;
+    }
+    if (y > 225 && y < 291) { 
+        y += 30;  
+    }
+}
+var extras = function() {
+    noStroke();
+    fill(0);
+    for (var i = 0; i < 2; i++) {
+        rect(35 + i * 315, 0, 20, height);
+    }
+    fill(0, 0, 0, 130);
+    rect(55, 0, width - 105, 14);
+    fill(255, 255, 255);
+    var ifStatementText = "";
+    if (minute() < 9) {
+        ifStatementText = "0";
+    }
+    var ampm = "AM";
+    if (hour() > 11) {
+        ampm = "PM";
+    }
+    text(hour() + ':' + ifStatementText + minute() + ampm, 200, 11);
+    var bars = [
+        {
+            height: 4,
+            yPos: 6
+        },
+        {
+            height: 5, 
+            yPos: 5
+        },
+        {
+            height: 6,
+            yPos: 4
+        },
+        {
+            height: 7,
+            yPos: 3
+        },
+        {
+            height: 8,
+            yPos: 2
+        }
+    ];
+    for (var i = 0; i < 5; i++) {
+        rect(60 + i * 4, bars[i].yPos, 3, bars[i].height);
+    }
+    text('AT&T', 100, 11); 
+    rect(280, 6, 7, 4);                             //locked screen
+    noFill();
+    stroke(255);
+    arc(284, 6, 12, 12, 90, 360);
+    triangle(288, 6, 292, 6, 290, 9);
+    arc(283.5, 6, 4, 4, 180, 360);
+    
+    strokeWeight(2);                                //wifi
+    for (var Size = 10; Size < 31; Size+=8) {
+        arc(131, 15, Size, Size, 240, 300);
+    }
+    triangle(130, 12, 131.5, 12, 131, 12.5);
+    
+    rect(316, 3, 15, 8);                        //battery
+    rect(331, 5, 2, 4);
+    fill(255);
+    rect(316, 3, 6, 8);
+};
+extras();
+//I have a lot of time on the holidays....
