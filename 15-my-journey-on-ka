@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--https://www.khanacademy.org/computer-programming/my-journy-on-ka/4945614988509184?width=900&&height=800-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>My Journy on KA</title>
+        <style>
+            body {
+                /*padding: 0px;*/
+                margin: 0px;
+                height: 700px;
+            }
+            #wrapper {
+                width: 100%;
+                height: 100%;
+                font-family: courier new, monospace, monaco;
+                font-size: 15px;
+                margin-top: -40px;
+                background: #669900;
+                position: relative;
+            }
+            #header {
+                color: white;
+                height: 1em;
+            }
+            #column_1-1 {
+                float: left;
+                width: 17em;
+                height: 132em;
+                background: #FF9900;
+                border: 1px solid black;
+                line-height: 40px;
+            }
+            
+            #column-2 {
+                float: right;
+                width: 42.6em;
+                height:132em;
+                background: #99FFFF;
+                border: 1px solid black;
+            }
+            h1, h2, h3, h4, h5, h6, p {
+                margin-left: 15px;
+                margin-right: 20px;
+            }
+            h2{
+               font-style: oblique;
+            }
+            h3 {
+                font-size: larger;
+            }
+            .tab {
+                margin-left: 15px;
+            }
+            #footer h6 {
+                float: right;
+                position: absolute; 
+                bottom: 0;
+                right: 0;
+                clear: right;
+                color: darkgray;
+            }
+            .imp-note {
+                margin-top: 76px;
+                background-color: yellow;
+                height: 5em;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id='wrapper'>
+            <div id='header'>
+                <h1><br>CORNE®OMAN</h1>
+            </div>
+            <div class="imp-note">
+                <p>Note: I will be changing the layout of this blog and hopefully use my skills from Intro to HTML to improve. Started Github, will help with styling every page on this "website". Let's get to work!</p>
+            </div>
+            <div id='column_1-1'>
+                <h2>Contents</h2>
+                <ul>
+                    <li><a href='#first'>Yosemite</a></li>
+                    <li><a href='#second'>Programming languages</a></li>
+                    <li><a href='#third'>Third Entry</a></li>
+                    <li><a href='#fourth'>Fourth Entry</a></li>
+                    <li><a href='#fifth'>Fifth Entry</a></li>
+                    <li><a href='#sixth'>Sixth Entry</a></li>
+                    <li><a href='#seventh'>Seventh Entry</a></li>
+                    <li><a href='#eighth'>Eighth Entry</a></li>
+                </ul>
+            </div>
+            <div id='column-2'>
+                <h3 id='first'>Yosemite</h3>
+                <h6>April 24, 2016</h6>
+                <p><span class='tab'>Welcome to my KA blog! My name is Roman and I am very fond of maths(s). I discovered KA by its excellent programming courses last year as I was searching the web on a hot October evening for "how to hack like matrix". As of right now, I am through 100% of Intro To JS and halfway through HTML5/CSS3 and Gaming and Visualizations. My goal for now is to advance in coding by applying mathamatics to JS and blog about my progress and stories a couple times a month. How far my wild ideas about philisophical concepts have taken me. Thanks, Neo.</span><br><span class='tab'>Recently, my dad and I have camped out at Yosemite for the holidays and hiked 12 hours total (2 days). Once, we were temporarily lost on the "trail" that took us here: <img src='https://upload.wikimedia.org/wikipedia/commons/1/13/Tunnel_View,_Yosemite_Valley,_Yosemite_NP_-_Diliff.jpg' width='500'/>Yep! We saw Apple's El Cap (my OS) wallpaper! Yosemite, a well-known landmark of America, really defines the grandeur California's nature. Definitely the place everyone should visit if they get the chance. </span><br><span class='tab'></span>Unfortunately, I haven't learned to properly implement JS into my HTML yet. That would be something to blog about later on. I'll see you in the next entry!</p>
+                <h3 id='second'>Programming Languages</h3>
+                <h6>May 27, 2016</h6>
+                <p><span class='tab'>Hello again! Just like computer development itself, my knowledge over time rapidly accelerates in programming (for a beginner). I began learning a few more languages: Python, which is said to be the best for learners (but I, of course, started with JavaScript on Khan Academy); C, the compiled language that is the mother of many languages (Python, C++, Java, etc.) and very useful for robotics; and Processing, like p5.js and the js used in KA, but with apps and more popularity. <strong class='tab'><br>Question: What specific Javascript library is used on Khan Academy? (Because it doesn't look like processing.js)</strong><br>I didn't really start programming with an objective, like most people want to hack a "minecraft mod" or to sell a product. I'm just passionate and love to code, without a reason. In the sense of where I will take it in the future, my dream is to serve at Google. In the Age of Information, programming at the leading organizations is the greatest enjoyment one can have. The fast pace of technology and spread of information in our age is unbelievable. Breakthroughs aren't shaping eras in matter of centuries anymore–with computer technology, major breakthroughs are occuring every decade. The age of physics, simulations, the age of the Web, the age of quantum computers, virtual reality, artificial intelligence, nanoengineering ...it's all big.</span><br><span class='tab'>For my projects on Khan Academy, I made a parabola (with the knowledge of a 7th grader), a Random Walker, a particle system, some OOD programs, console programs (like finding average and variance of array), and more since the making of this blog began. Still a whole course away on learning to integrate JavaScript into HTML (that would be the real JavaScript lib). Did you hear how the WWW Consortium won't be new HTML versions, just updating and reducing all the version names to simply HTML. By the way, <em>go check out </em>Daniel Shiffman's works! He's a co-producer of Processing and teaches at ITP, inspired the Natural Simulations course here on Khan Academy, and is a brilliant presenter and online tutor (<a href='https://www.youtube.com/channel/UCvjgXvBlbQiydffZU7m1_aw'>his YouTube channel</a>). I'm almost at a million energy points because I've hit the math, working on precalc and geometry to, also, integrate with my coding. </span><br><span class='tab'>Well, that sums up the my exciting news. I'm also looking into the visiontech camps near my town, summer programming with other peers appeals me. Summer's almost here! Enjoy your Memorial Day weekend. Code!</span></p>
+                <h6>August 7th</h6><p>Hi yall. I'm not available to keep this up. At least while I'm not serious about HTML/CSS. Go check out my other projects. Also, it's been a tough summer. Oh yeah, and good luck for the next 10 months (school).</p>
+            </div>
+            <div id='footer'>
+                <h6>© 2016 CORNE®OMAN</h6>
+            </div>
+        </div>
+    </body>
+</html>
