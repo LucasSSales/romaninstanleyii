@@ -1,0 +1,42 @@
+var Book = function(title, author, numPages) {
+  this.title = title;
+  this.author = author;
+  this.numPages = numPages;
+  this.currentPage = 0;
+};
+
+Book.prototype.readItAll = function() {
+  this.currentPage = this.numPages;
+  println("You read " + this.numPages + " pages!");
+};
+
+var PaperBack = function(title, author, numPages, cover) {
+  Book.call(this, title, author, numPages);
+  this.cover = cover;
+};
+
+PaperBack.prototype = Object.create(Book.prototype);
+
+PaperBack.prototype.burn = function() {
+  println("Omg, you burnt all " + this.numPages + " pages");
+  this.numPages = 0;
+};
+
+var book = new Book("Robot Dreams", "Isaac Asimov", 320);
+book.readItAll(); // You read 112 pages!
+println("I loved reading " + book.title); // I loved reading Robot Dreams
+println(book.author + " is my fav author"); // "Isaac Asimov" is my fav author
+
+var book2 = new Book("Animal Farm", "George Orwell", 112);
+var pirate = new Book("Pirate Cinema", "Cory Doctorow", 384);
+var giver = new Book("The Giver", "Lois Lowry", 179);
+var tuck = new Book("Tuck Everlasting", "Natalie Babbit", 144);
+book2.readItAll(); // You read 112 pages!
+pirate.readItAll(); // You read 384 pages!
+giver.readItAll(); // You read 179 pages!
+tuck.readItAll(); // You read 144 pages!
+
+var calvin = new PaperBack("The Essential Calvin & Hobbes", "Bill Watterson", 256, "http://ecx.images-amazon.com/images/I/61M41hxr0zL.jpg");
+calvin.readItAll(); // You read 256 pages!
+calvin.burn(); // Omg, you burnt all 256 pages!
+println(calvin.numPages);
