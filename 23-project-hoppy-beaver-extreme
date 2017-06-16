@@ -1,0 +1,223 @@
+/**
+ * WARNING: 
+ * 
+ * __        _______    _     _    ____
+ * | |      | _____ |  | |   | |  |  __ \
+ * | |      | |    ||  | |   | |  | |   \ \
+ * | |      | |    ||  | |   | |  | |    | |
+ * | _____  | |____||  | |___| |  | |____/ /
+ * _______| |_______|   \_____/   |______
+ * 
+ * (ᵐᵃᵈᵉ ᵗʰᵃᵗ ᵐʸˢᵉˡᶠ)
+ * at least turn volume down a bit. It hit me.
+ * 
+***Changes made:
+ * june 2, 2016
+        – walls with holes
+        – upwards/downwards velocity with acceleration/deceleration 
+ * june 4 – bad sticks 
+ * june 6 – bullets
+ * june 7 – made walls stacks
+ * june 18 – fixed error with bullets
+ * june 19 – remodeled code
+ * july 27 – made walls a stack of blocks
+ * july 31 – rotating sticks
+ * 
+ * TODO: 
+ * add ability to shoot blocks from wall 
+ * and add ammo that decreases 
+ * with ammo packages to collect
+*/
+var divider;
+
+/**CONSTANTS*/
+imageMode(CENTER);
+rectMode(CENTER);
+textAlign(CENTER);
+var block = getImage('cute/PlainBlock');
+var dirt = getImage("cute/DirtBlock");
+var velocity = new PVector(2, 2);  //how fast on x
+
+/**OBJECT CONSTRUCTORS*/
+
+var divider;
+
+/**Ship*/
+var Ship = function(x, y) {
+    this.position = new PVector(width/2, height/2);
+    this.vy = velocity.y; 
+    this.gravity = 0.6;
+    this.img = getImage("space/rocketship");
+    this.width = 70;
+    this.countHoles = 0;
+    this.score = 0;
+    this.flying = true;
+    this.keys = [];
+};
+
+Ship.prototype.draw = function() {
+    image(this.img, this.position.x, this.position.y, this.width, this.width);
+    if (this.flying === true) {
+        if (this.keys[UP]) {
+            this.rise();
+        } else {
+            this.drop();
+        }
+        fill(238, 255, 0);
+        text("Score: "+this.score, 100, 75);
+    } else {
+        this.drop();
+        velocity.x = 0;
+        if (keyIsPressed) {
+            Program.restart();
+        }
+        fill(255);
+        text("UP to ascend\nhold to hover\n\nRIGHT to fire\nhold to machine gun\n\n\nany key to restart", width/2, 265);
+    }
+};
+
+Ship.prototype.rise = function() {
+    this.vy = -7;
+};
+
+Ship.prototype.drop = function() {
+    this.position.y+=this.vy;
+    this.vy+=this.gravity;
+};
+
+Ship.prototype.survived = function(wall, stick) {
+    var hitStick = this.position.x < stick.position.x+5 && this.position.x > stick.position.x-5 && this.position.y < stick.position.y+25 && this.position.y > stick.position.y-25;
+    //for (var h = 0; h < wall.stack.length; h++) {
+        //if (wall.stack[h]===1) {
+            //var hitWall = this.position.x > wall.x-wall.size*1.5/2 && this.position.x < wall.x+wall.size*1.5/2;
+        if (this.position.y !== constrain(this.position.y, -150, height-50) || hitStick /*|| hitWall*/) {
+            this.position.y = constrain(this.position.y, -30, height-50);
+            if (this.flying===true) {
+                playSound(getSound("retro/boom2"));
+            }
+            this.flying = false;
+            fill(255, 0, 0);
+            textFont(createFont("monospace"), 20);
+            text("SCORE: "+this.score, width/2, 200);
+        } 
+    //}
+};
+/**Walls*/
+var Walls = function() {
+    this.x = 700;
+    this.size = 50;
+    this.stack = [];
+    this.hole = false;
+    this.build = function() { 
+        var total = round(height/this.size);
+        for (var w = 0; w < total; w++) {
+            this.stack[w]=1;
+            if (random(10)<1.6&&this.hole===false&&w>1||this.stack[w-1]===0&&this.stack[w-2]===1) {
+               this.stack[w]=0;
+                this.hole = true;
+            } else if (this.hole===false&&w===total-3) {
+                this.stack[w]=0; //if random generator don't work
+                this.hole = true;
+            }
+        }
+    };
+    this.build();
+};
+
+Walls.prototype.update = function() {
+    this.x-=velocity.x;
+    if (this.x < 0) {
+        this.x = width;
+        this.hole = false; 
+        this.build();
+    }
+};
+Walls.prototype.display = function() {
+    for (var y = 0; y < this.stack.length; y++) {
+        if (this.stack[y]===1) {
+            image(block, this.x, -15+y*this.size, this.size, this.size*1.5);
+        }
+    }
+};
+/**Sticks*/
+var Sticks = function() {
+    this.position = new PVector(700+width/3, random(100, height-140));
+    this.angle = 0;
+};
+
+Sticks.prototype.draw = function() {
+    this.condition = function (){
+        if (this.position.x < 0 && random(0, 0.8) < 0.01) {
+            this.position.x = width;
+            this.position.y = random(100, height-140);
+        }
+    };
+    fill(255, 255, 0);
+    pushMatrix();
+    translate(this.position.x, this.position.y);
+    rotate(this.angle);
+    rect(this.position.x/this.position.x, this.position.y/this.position.y, 10, 50);
+    popMatrix();
+    this.angle+=velocity.x*5;
+    this.position.x-=velocity.x*3; 
+    this.condition();
+};
+/**Bullets*/
+var Bullets = function(ship) {
+    this.position = new PVector(ship.position.x, ship.position.y+10);
+};
+
+Bullets.prototype.draw = function(stick) {
+    this.position.x+=velocity.x*2;
+    fill(255, 89, 0);
+    rect(this.position.x, this.position.y, 6, 3);
+    if (this.position.x > stick.position.x-3 && this.position.x < stick.position.x+3 && this.position.y > stick.position.y-30 && this.position.y < stick.position.y+30) {
+        stick.position.x = 0;
+        this.position.x = width;
+    }
+};
+
+/**DEFINE*/
+
+var dart = new Ship(width/2, height/2);
+var bullets = [];
+keyPressed = function() {
+    Ship.keys[keyCode] = true;
+    if (Ship.keys[RIGHT]) {
+        bullets.push(new Bullets(dart));   
+        playSound(getSound("retro/laser1"));
+    }
+
+};
+keyReleased = function() {
+    Ship.keys[keyCode] = false;
+};
+
+var grassXs = [];
+for (var g = 0; g < width/2; g++) { 
+    grassXs.push(g*40);
+}
+
+var ben = new Walls();
+var philipe = new Sticks();
+
+/**MAIN CODE*/
+
+draw = function() {
+    background(19, 48, 135);
+    for (var g = 0; g < grassXs.length; g++) {
+        image(dirt, grassXs[g], height-50, 40, 100);
+        grassXs[g]-=velocity.x;                         
+        if (grassXs[g] < -40) {
+            grassXs[g] = 759;
+        }
+    }
+    ben.update();
+    ben.display();
+    philipe.draw();
+    dart.survived(ben, philipe);
+    for (var b = 0; b < bullets.length; b++) {
+        bullets[b].draw(philipe);
+    } 
+    dart.draw();
+};
