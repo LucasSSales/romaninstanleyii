@@ -1,0 +1,122 @@
+//I know this isn't hard to read, but here's a quote I made up: 
+//"Those who can't read code without comments aren't programmers,"
+//and "Comments are for the weak."
+rectMode(CENTER);
+var Mover = function(){
+    this.center = new PVector(200,200);
+    this.velocity = new PVector(0, 0);
+    this.acceleration = new PVector(0, 0);
+    this.moveSpeed = 1;
+    this.rotateAmt = 0;
+    this.x = 0;
+    this.y = 0;
+};
+
+Mover.prototype.aF = function(f){
+    this.acceleration.add(f);
+};
+
+Mover.prototype.run = function(){
+    var friction = this.velocity.get();
+    friction.mult(-0.01);
+    this.aF(friction);
+    
+    this.velocity.add(this.acceleration);
+    this.center.add(this.velocity);//round(this.velocity.x), round(this.velocity.y), 0);
+    this.acceleration.set(0, 0);
+};
+
+Mover.prototype.move = function(){
+    this.x = cos(this.rotateAmt)*this.moveSpeed;
+    this.y = sin(this.rotateAmt)*this.moveSpeed;
+    var dir = new PVector(this.x, this.y);
+    this.aF(dir);
+};
+
+Mover.prototype.turnLeft = function(){
+    this.rotateAmt-=4;
+};
+
+Mover.prototype.turnRight = function(){
+    this.rotateAmt+=4;
+};
+
+Mover.prototype.display = function(){
+    pushMatrix();
+    translate(this.center.x, this.center.y);
+    rotate(this.rotateAmt+90);
+    fill(0, 1, 1, 0);
+    stroke(0);
+    triangle(0, -10, 8, 5, -8, 5);
+    rect(-4, 5, 3, 2);
+    rect(3, 5, 3, 2);
+    popMatrix();
+};
+
+Mover.prototype.wrap = function(){
+    if(this.center.x!==constrain(this.center.x, 0, width)){
+        this.center.x = abs(this.center.x-width);
+    }
+    if(this.center.y!==constrain(this.center.y, 0, height)){
+        this.center.y = abs(this.center.y-height);
+    }
+};
+
+var Bullet = function(mover, arr){
+    this.center = mover.center.get();
+    this.rotateAmt = mover.rotateAmt;
+    this.mover = mover;
+    this.x = this.center.x+cos(mover.rotateAmt)*10; //could've just drawn these under the ship...
+    this.y = this.center.y+sin(mover.rotateAmt)*8;
+    arr.push(this);
+};
+
+Bullet.prototype.display = function(){
+    pushMatrix();
+    translate(this.x, this.y);
+    rotate(this.rotateAmt);
+    fill(255, 0, 0);
+    noStroke();
+    ellipse(0, 0, 3, 3);
+    popMatrix();
+    this.velocity = this.mover.velocity.get();
+    this.x+=cos(this.rotateAmt)*this.velocity.x*5;
+    this.y+=sin(this.rotateAmt)*this.velocity.y*5;
+};
+
+var m = new Mover();
+var bullets = [];
+
+draw = function() {
+    fill(150, 150, 150, 70);
+    rect(width/2-1, height/2-1, width+1, height+1);
+    
+    m.run();
+    m.wrap();
+    m.display();
+    
+    if(bullets.length>0){
+        bullets[bullets.length-1].display();
+    }
+};
+
+keyPressed = function(){
+    switch(keyCode){
+        case RIGHT:
+            m.turnRight();
+            break;
+        case LEFT:
+            m.turnLeft();
+            break;
+        case 90:
+            m.move();
+            break;
+        case DOWN:
+            m.rotateAmt += random(170, 190);
+            break;
+        case ENTER:
+            new Bullet(m, bullets);
+    }
+};
+
+
