@@ -1,0 +1,47 @@
+/*Hey thank staff for not saving my program. No warning when closing the webpage? Do your updates just make this site worse? 
+Anyway, I had something like this:
+Trying Monte Carlo method first time Jan 11, 2017 11:40pm (now 12:40am)
+Chalkboard equations:
+c=pi*r^2, s=4r^2
+c/s=pi/4
+pi=4c/s
+pi=4*dotsInCircle/dotsInSquare
+pi=4*P(inCircle)/1
+*/
+textAlign(CENTER);
+textFont(createFont("Serif"), 100);
+strokeWeight(3);
+
+var x, y;
+var pointsInCircle = 0, pointsInSquare = 500;
+var radius = width/2;
+var pi; //the man of the house
+var speed = 233;
+
+var inCircle = function(x, y){
+    return dist(x, y, width/2, height/2)<radius;
+};
+
+draw = function() {
+    for(var i = 0; i<speed; i++){
+        //equal probability of any position, 1/160000
+        x = random(0, width);
+        y = random(0, height);
+        if(inCircle(x, y)){
+            stroke(random(150, 250), random(150, 250), random(150, 250), 100);
+            pointsInCircle++;
+        } else{
+            stroke(random(0, 100), random(0, 100), random(0, 100), 100);
+        }
+        pointsInSquare++;
+        point(x, y);
+    }
+    pi = 4*pointsInCircle/pointsInSquare; //I was like, "OH! Points are always in square!" pointsInSquare++ used to be inside else{}
+    println(pi);
+};
+//CLICK for pi!
+mouseClicked = function(){
+    fill(0);
+    text(pi, width/2, height/2);
+};
+/*well hey, I'm good with maths. I'm good with maths! */
