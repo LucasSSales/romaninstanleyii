@@ -1,0 +1,103 @@
+//21 days before dec 9 2016
+
+//Fd=−1/2 ρ v^2 A Cd v^
+//drag force = -1/2 SubstanceDensity speedSquared surfaceArea coefficientDrag velocityUnitVector
+//i.o.w. Fdrag = magnitude of speed squared * coefficient of drag
+//Fdrag = |v|^2 * Cd * (v^ * -1)
+
+var Substance = function(x, y, w, h, c) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.c = c;
+};
+  
+Substance.prototype.contains = function(m) {
+    var l = m.position;
+    return l.x > this.x && l.x < this.x + this.w &&
+           l.y > this.y && l.y < this.y + this.h;
+};
+  
+Substance.prototype.calculateDrag = function(m) {
+    var speed = m.velocity.mag();
+    //coefficient * speed squared * surfaceArea
+    var dragMagnitude = this.c * speed * speed * m.mass;
+    
+    //direction
+    var dragForce = m.velocity.get();
+    //negativize
+    dragForce.mult(-1);
+    
+    //final magnitude
+    dragForce.normalize();
+    dragForce.mult(dragMagnitude);
+    
+    return dragForce;
+};
+  
+Substance.prototype.display = function() {
+    noStroke();
+    fill(73, 95, 237);
+    rect(this.x, this.y, this.w, this.h);
+};
+
+var Log = function(x, y) {
+    this.width = random(30, 60);
+    this.height = this.width/2;
+    this.mass = this.width*30;
+    this.position = new PVector(x, y);
+    this.velocity = new PVector(0, 0);
+    this.acceleration = new PVector(0, 0);
+};
+  
+Log.prototype.applyForce = function(force) {
+    var f = PVector.div(force, this.mass);
+    this.acceleration.add(f);
+};
+  
+Log.prototype.update = function() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+};
+
+Log.prototype.display = function() {
+    fill(184, 150, 55);
+    rect(this.position.x, this.position.y, this.width, this.height, 5);
+};
+
+Log.prototype.checkEdges = function() {
+    if (this.position.y > height-this.height) {
+        this.velocity.y *= -1;
+        this.position.y = height-this.height;
+    }
+};
+
+var logs = [];
+var Substance = new Substance(0, height/2, width, height/2, 0.1);
+
+for (var i = 0; i < 5; i++) {
+    logs[i] = new Log(i*width/5+11+random(-10, 10), random(-50, 50));
+}
+    
+draw = function() {
+    background(235, 254, 255);
+    Substance.display();
+
+    for (var i = 0; i < logs.length; i++) {
+        var gravity = new PVector(0, 0.4*logs[i].mass);
+        //fix, use the drag formula to more accurately apply wind based on masses
+        var wind = new PVector(0.02, 0);
+        logs[i].applyForce(gravity);
+        if (Substance.contains(logs[i])) {
+            var drag = Substance.calculateDrag(logs[i]);
+            logs[i].applyForce(drag);
+        } else {
+            logs[i].applyForce(wind);
+        }
+        logs[i].update();
+        logs[i].display();
+        logs[i].checkEdges();
+    }
+};
