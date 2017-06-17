@@ -1,0 +1,31 @@
+//start off with 3.1415926535 11 sig figs or 10 decimal points
+//now you have n. multiply pi by n to get g. 
+//if round(g)/round(n)===round(pi*11), then print
+//or if round(g)/round(n) is closer than the previous most closest quotient...
+//let's begin:
+//ok now my goal is to find the smallest divident and divisor
+//(think 22/7)
+println("Smallest divident / divisor to get pi to x decimal places (variable decimals):\n\n");
+var maximum = 10000000000;
+var smallest = maximum;
+var decimals = 4;
+var pi = floor(PI*pow(10, decimals))/pow(10, decimals);
+var g, n;
+frameRate(0);
+draw = function(){
+    for(var i = 0; i<10000; i++){
+        n = round(random(0, maximum));
+        g = round(n*pi);
+        if(g/n===pi && n<smallest){
+            smallest = n;
+            println(g+" / "+n+" = "+g/n);
+        }
+    }
+    if(frameCount > 1000){
+        background(0);
+        fill(255, 255, 255);
+        textFont(createFont("Courier New"), 25);
+        textAlign(CENTER);
+        text(round(smallest*pi)+" / "+smallest+" = "+round(round(smallest*pi)/smallest*pow(10, decimals))/pow(10, decimals), width/2, height/2);
+    }
+}; 
