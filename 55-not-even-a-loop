@@ -1,0 +1,21 @@
+var r = 1;
+var theta = 0;
+
+draw = function() {
+    //background(255, 255, 255);
+    
+    pushMatrix();
+    scale(10/(frameCount%10));
+    translate(width/2, height/2);
+    
+    var x = r * cos(theta);
+    var y = r * sin(theta);
+    
+    fill(0, 0, 0);
+    //line(0, 0, x, y);
+    ellipse(x, y, 5, 5);
+    popMatrix();
+    
+    theta += 1;
+    r*=1.005;
+};
