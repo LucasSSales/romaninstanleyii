@@ -1,0 +1,164 @@
+/**Given the trinomial ax^2 +bx +c
+ * Solve to a,b,c
+ * to get a factored product (?)
+ * UPDATE i will improve and shorten the code latr.
+*/
+
+var a = 2, b = 4, c = -6; //sorry, but predefined for now
+var aFactors = [], bFactors = [], cFactors = []; //awesome! don't even have to declare datatype, just say x[x.length] in the future. js is incredible                                                                UPDATE   nvm
+var ap = [], bp = [], cp = []; //ap.length = 4*aFactors.length actually
+//p for pairs
+var noerror = false, calculable = true;
+textAlign(CENTER, CENTER);
+textFont(createFont("monospace"), 40);
+
+//straight from the textbook! Sorry, Mrs. Mara :(
+/**when b = negative and c is positive*/
+var method1 = function(){
+    //-------------PART ONE: NEGATIVE FACTORS OF C-------------
+    //factors of c
+    for(var i = c; i>0; i--){
+        if(c%i===0){
+            cFactors[cFactors.length] = -i;
+        }
+    }
+    if(cFactors.length%2!==0){
+        cFactors.splice(floor(cFactors.length/2), 0, cFactors[floor(cFactors.length/2)]);
+    }
+    //ALL factor PAIRS of c
+    for(var i = 0; i<cFactors.length; i++){
+        cp[cp.length] = {
+            first: cFactors[i],
+            second: cFactors[cFactors.length-1-i]
+        };
+    }
+    //-----------------NEXT PART 2--------------------
+    //calculate factors of a, multiply that.length * cp.length, and so forth
+    for(var i = a; i>0; i--){
+        if(a%i===0){
+            aFactors[aFactors.length] = i;
+        }
+    }
+    if(aFactors.length%2!==0){
+        aFactors.splice(floor(aFactors.length/2), 0, aFactors[floor(aFactors.length/2)]);
+    }
+    //PAIRS OF A
+    for(var i = 0; i<aFactors.length; i++){
+        ap[ap.length] = {
+            first: aFactors[i],
+            second: aFactors[aFactors.length-1-i]
+        };
+    }
+    //------------------PHASE 3: RESULT-----------------------
+    //this produces a calculation that recurses (ap.length*cp.length) times
+    for(var i = 0; i<ap.length; i++){
+        for(var j = 0; j<cp.length; j++){
+            if(ap[i].first*cp[j].second+ap[i].second*cp[j].first===b){
+                background(0);
+                fill(255);
+                text(a+"x² "+b+"x + "+c+"\n=\n("+ap[i].first+"x"+cp[j].first+")("+ap[i].second+"x"+cp[j].second+")", width/2, height/2);
+                noerror = true;
+            }
+        }
+    }
+};
+/**when b = positive and c = negative*/
+var method2 = function(){
+    //------------PART I: INDIVIDUAL FACTORS OF C-----------------
+    //this produces a chain of negative factors to be multiplied by a positive number to get C
+    for(var i = c; i<0; i++){
+        if(c%i===0){
+            cFactors[cFactors.length] = i;
+        }
+    }
+    if(cFactors.length%2!==0){
+        cFactors.splice(floor(cFactors.length/2), 0, cFactors[floor(cFactors.length/2)]);
+    }
+    //factor pairs of the negative c
+    //because it's negative, two factors of c have different signs
+    for(var i = 0; i<cFactors.length; i++){
+        cp[cp.length] = {
+            first: cFactors[i],
+            second: -cFactors[cFactors.length-1-i]
+        };
+    }
+    //-------------------PART II: FACTORS OF A--------------------
+    for(var i = a; i>0; i--){
+        if(a%i===0){
+            aFactors[aFactors.length] = i;
+        }
+    }
+    if(aFactors.length%2!==0){
+        aFactors.splice(floor(aFactors.length/2), 0, aFactors[floor(aFactors.length/2)]);
+    }
+    //calc the pairs
+    for(var i = 0; i<aFactors.length; i++){
+        ap[ap.length] = {
+            first: aFactors[i],
+            second: aFactors[aFactors.length-1-i]
+        };
+    }
+    //-------------------PART III: --------------------
+    for(var i = 0; i<ap.length; i++){
+        for(var j = 0; j<cp.length; j++){
+            if(ap[i].first*cp[j].second + ap[i].second*cp[j].first===b){
+                background(0);
+                fill(255);
+                text(a+"x² + "+b+"x "+c+"\n=\n("+ap[i].first+"x"+cp[j].first+")("+ap[i].second+"x+"+cp[j].second+")", width/2, height/2);
+                noerror = true;
+            }
+        }
+    }
+};
+/**when a = negative*/
+var method3 = function(){
+};
+
+if(b<0&&c>0&&a>0){
+    method1();
+}else if(b>0&&c<0&&a>0){
+    method2();
+}else if(a<0){
+    method3();
+}else{
+    calculable = false;
+    background(0);
+    fill(255, 100, 100);
+    text("\n\nNot calculable.\n\n(Yet.)", width/2, height/2);
+}
+if(!noerror&&calculable){
+    background(0);
+    fill(255, 255, 0);
+    text("Invalid numbers.", width/2, height/2);
+}
+
+/**
+ * 
+ * //factors of c
+    for(var i = c; i>0; i--){
+        if(c%i===0){
+            cFactors[cFactors.length] = i;
+        }
+    }
+    if(cFactors.length%2!==0){
+        cFactors.splice(floor(cFactors.length/2), 0, cFactors[floor(cFactors.length/2)]);
+    }
+    //ALL factor PAIRS of c
+    for(var i = 0; i<cFactors.length*2; i++){
+        cp[cp.length] = {
+            first: cFactors[i],
+            second: cFactors[cFactors.length-1-i]
+        };
+        if(i>cFactors.length-1){
+            cp[cp.length] = {
+                first: -1*cFactors[i-cFactors.length],
+                second: -1*cFactors[cFactors.length+cFactors.length-i-1]
+            };
+        }
+        println(cp[cp.length-1].first+", "+cp[cp.length-1].second);
+    }
+    /**NEXT**/
+
+
+
+
