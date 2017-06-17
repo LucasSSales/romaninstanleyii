@@ -1,0 +1,123 @@
+/*probably created july 2016*/
+//static ?: 
+//time
+var t = random(10),
+accel = 0.02;
+var birdDispersion = 80;
+var raster = 01; //whoa
+var season = (month()<3?3:month()<6?0:month()<9?1:month()<12?2:3); //from 0 - 3
+var sunsetColor = (season===3?color(140, 3/4*140, 25):season===2?color(185, 70, 0):season===1?color(247, 190, 5):color(245, 14, 61));
+var skyColor = (season===3?color(120, 160, 220):season===2?color(247, 129, 158):season===1?color(13, 86, 255):color(204, 230, 9));
+var mtData = [];
+{mtData.push({
+        fill: color(97, 112, 90),
+        time: random(20007.5, 20008.5), 
+        inc: 0.009, 
+        bottom: random(318, 322)
+    }, {
+        fill: color(28, 61, 87), 
+        time: random(539, 340), 
+        inc: 0.008, 
+        bottom: 340
+    }, {
+        fill: color(43, 52, 61),
+        time: random(1049.5, 1050.5), 
+        inc: -0.003, 
+        bottom: 380
+    }, {
+        fill: color(59, 120, 24), 
+        time: random(10147, 10148), 
+        inc: random(0.002, 0.004), 
+        bottom: random(410, 430)
+    }, {
+        fill: color(0), 
+        time: random(15, 20), 
+        inc: random(0.0010, 0.0040),
+        bottom: random(445, 460)
+});}
+var h = mtData[0].bottom;
+
+var trees = function(x, y, s, lc, tc) {
+    noStroke();
+    fill(tc); 
+    triangle(x, y+s*2, x+s/4, y+s*5, x-s/4, y+s*5);
+    fill(lc); 
+    for(var i = 0; i < 3; i++){
+        triangle(x, y+s*i, x+s, y+s*(i+2), x-s, y+s*(i+2));
+    }
+};
+
+var range = function() {
+    for (var i = 0; i < mtData.length; i++) { 
+        var x = 0; 
+        for(var x = 0; x<width; x+=raster) {
+            var n = noise(mtData[i].time);
+            var y = map(n, 0, 1, 0, width/2.5);
+            var mt = mtData[i];
+            stroke(mt.fill);
+            rect(x, mt.bottom, 1, -y);
+            mt.time += mt.inc;
+            //trees
+            if (i === mtData.length-2 && random(1)<0.4) {
+                var treeSize = random(4, 7);
+                
+                trees(x-treeSize, random(height-y+10, height), treeSize, color(red(mt.fill), green(mt.fill)-20, blue(mt.fill)), 52); 
+            } else if (i === mtData.length-1 && random(1)<0.015) {
+                var treeSize = random(10, 15);
+                trees(x, height-y+treeSize, treeSize, 0, 0);
+            }
+        }
+    }
+};
+
+var sky = function(sky, sunset){
+    for (var y = 0; y < 1; y+=1/h) {
+        stroke(lerpColor(sky, sunset, y));
+        rect(0, h-y*h, width, 1);
+    }
+};
+
+//Thx to Jim E for motion
+var clouds = function(detail, cloudCover, time) {
+    for (var x = 0; x < width/detail; x++) {
+        for (var y = 0; y < h; y++) {
+            var noize = noise(detail/100*x+time, detail/100*y+time/4, time);
+            var opacity = map(noize, 0, 1, 0, cloudCover);
+            fill(255, 255, 255, 400-opacity);
+            noStroke();
+            rect(x*detail, y*detail, detail, detail);
+        }
+    }
+};
+
+var birds = function() {
+    var x = random(birdDispersion, width-birdDispersion);
+    var y = random(birdDispersion, h-birdDispersion/2);
+    for (var i = 0; i < birdDispersion/10; i++) {
+        var xx = random(x-birdDispersion, x+birdDispersion);
+        var yy = random(y-birdDispersion, y+birdDispersion);
+        strokeWeight(3);
+        line(xx, yy, xx+5, yy-3);
+        line(xx+5, yy-3, xx+10, yy);
+        line(xx+10, yy, xx+15, yy-4);
+        line(xx+15, yy-4, xx+20, yy-1);
+    }
+};
+
+background(0, 0, 0, 0);
+range();
+birds();
+var staticImage = get(0, 0, width, height);
+
+draw = function(){
+    sky(sunsetColor,  skyColor);
+    clouds(8, 900, t);
+    t-=accel;
+    accel+=random(0, 0.00001);
+    image(staticImage, 0, 0);
+};
+
+
+
+
+
