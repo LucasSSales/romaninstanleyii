@@ -1,0 +1,11 @@
+/*
+Recreating my first program that I've programmed from scratch. My first google (gmail) account was terminated by google because I just wasn't thirteen yet and lawyers. This was around early early October of 2015. 
+These five lines mean a whole bunch to me, and I'm glad I took a snapshot of my programs before the account was deleted. 
+*/
+
+
+draw = function() {
+    noStroke();
+    fill(mouseY, mouseX, mouseX);
+    ellipse(200, 200, mouseX, mouseY);
+};
