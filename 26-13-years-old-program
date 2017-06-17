@@ -1,0 +1,88 @@
+//MAKE SURE variable names make sense
+var strings = ["Last login: Mon June 20 23:24:02 on ttys000\nRoman's MBP:~ roman$   ", '"it is my birthday"', [], "ERROR: OVERLOAD\nSYSTEM SHUTDOWN IN ", 6, 0];
+var typingcommand = strings[1].split("");
+var typedletterid = 0;
+var commandprogress = "";
+
+var programstart= millis();
+var textsize = 12;
+textFont(createFont("monospace"), textsize);
+
+var scroll = true;
+var scrollamount = -0;
+var stoptime = 21.5;
+var poststoptrack = stoptime;
+var rotateamt = 0;
+
+draw = function() {
+    frameRate(0);
+    var seconds = (millis()-programstart)/1000;
+    var timeaction = function(marker, what) {
+        if (seconds >= marker) {
+            what();
+        }
+    };
+    
+    pushMatrix();
+    if (strings[2].length>2615) {
+        if (scroll === true) {
+            translate(0, scrollamount);
+            scrollamount+=-0.18;
+        } else {
+            translate(0, scrollamount-50);
+        }
+    }
+    background(0);
+    fill(0, 255, 0);
+    text(strings[0]+commandprogress, textsize, 9, 360, 330);
+    
+    if (typedletterid < typingcommand.length && random(0, 1)<0.05) {
+        commandprogress+=typingcommand[typedletterid];
+        typedletterid++; 
+    } else if (typedletterid === typingcommand.length) {
+        if (scroll===true) {
+            strings[2].push(round(random(0, 1)));
+        }
+        text(strings[2].join(""), textsize, 39, width-textsize*2, 2003/3);
+    }
+    
+    timeaction(stoptime, (function() { 
+        scroll = false;
+        text(strings[3]+(strings[4]-strings[5]), textsize, 2003/3+40);
+        if (seconds > poststoptrack && strings[4]-strings[5]>0) {
+            strings[5]++;
+            poststoptrack = seconds+1;
+        }
+    }));
+    fill(255);
+    //text(round((millis()-programstart)/1000), width-15, abs(scrollamount)+50); 
+    popMatrix();
+    
+    //loading
+    timeaction(stoptime+6, (function() {
+        frameRate(10);
+        rectMode(RADIUS);
+        background(0);
+        noStroke();
+        for (var r = 0; r <= 360; r+=360/8) {
+            pushMatrix(); 
+            translate(width/2, height/2);
+            rotate(r);
+            fill(120);
+            rect(12, 0, 5, 2, 4);
+            popMatrix();
+        }
+        pushMatrix();
+        translate(width/2, height/2);
+        rotate(rotateamt);
+        fill(255);
+        rect(12, 0, 5, 2, 4);
+        popMatrix();
+        rotateamt+=360/8;
+    }));
+    timeaction(stoptime+11, (function() {
+        background(0);
+    }));
+};
+
+//13th bday
