@@ -1,0 +1,31 @@
+var bigRadius = random(75, 175);
+var bigCenter = new PVector(200, 200);
+var ellipseInfo = [];
+var overlap = false;
+
+ellipse(bigCenter.x, bigCenter.y, bigRadius*2, bigRadius*2);
+for(var i = 0; i<bigRadius*15; i++){
+    var radius = random(i/bigRadius/2, bigRadius/i); //huh...why the white space around large cells?
+    var center = new PVector(random(bigCenter.x-bigRadius, bigCenter.x+bigRadius), random(bigCenter.y-bigRadius, bigCenter.y+bigRadius));
+    var angle = center.get();
+    angle.sub(bigCenter);
+    angle.normalize();
+    var comparedPoint = new PVector(center.x+angle.x*radius, center.y+angle.y*radius);
+    
+    //if entire ellipse inside big circle
+    if(dist(comparedPoint.x, comparedPoint.y, bigCenter.x, bigCenter.y)<bigRadius){
+        ellipseInfo.push({radius: radius, center: center}); 
+            //go through all previous circles check for overlap
+            for(var i = 0; i<ellipseInfo.length-1; i++){
+                //if ellipses overlap at all with any others, dont draw it
+                if(dist(ellipseInfo[i].center.x, ellipseInfo[i].center.y, center.x, center.y)<(ellipseInfo[i].radius+radius)){
+                    overlap = true;
+                }
+            }
+        if(!overlap){
+            ellipse(center.x, center.y, radius*2, radius*2);
+        }
+        overlap = false;
+    }
+}
+
