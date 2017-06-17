@@ -1,0 +1,388 @@
+//What if you could simulate natural selection, in one computer program?
+
+
+
+
+
+
+
+
+
+/** 
+ * 23 dec 2016 
+        OK. Here's what happens. Bees are the predator and generated with random mutations, but mutations to no existing genetic code. It generates new random genes. Oh! There's food. Now, if the bee's properties are just right, it will hit the food before the food naturally dies. Bee lives longer, doesn't die. Food is generated too with fewer random genes. Runs from food. Size dependant of biggest bee that ever lived (which is constantly recorded bottom of screen). However, if the bee is too small, the food just changes color or naturally dies. _Exhale_
+ *  5 nov 2016
+    These are comic simulations of bees. They seek the food. Evolution weeds out the ones without optimum random values, each growth of the bee increasing in color to signify that its traits had allowed its competition for food bee successful :)
+//btw, I got the idea of using comic bee motion: 
+//e.g.   http://poshified.com/wp-content/uploads/2016/05/bee-buzz-trail.png
+ *  5 nov 2016
+    OH BOY! I made some big changes today, I'm staggered by how great the result, the program, could be by my code. It's a great feeling. Anyway, the fittest bee lives, grows; the unablest bees die. 
+ * dec 12 2016: started TODO(changelog)
+    
+PROPERTIES:         (in order)
+    i. angle incrementation speed
+    ii. midpoint velocity (thus food velocity)
+    iii. volume of bee and food
+    iv. G constant
+    v. amtWobble
+    vi. coefficient of friction
+    vii. 
+    
+TODO: 
+☑   REPLACE the eating function with code saying a bug decreases the life of food based on bug's mass. (If food is small, all bugs can kill it. If food's mass is large, either a lot of bugs or one big bug.)
+☑   add flight mechanism (fight or flight) to food, avoiding food at random value * average bees/predator speeds
+        -Set up a target count on the food and a repulsion force.
+        -For every bee that targets the food, increment the repulsion force by the bee's velocity. Increment the target count by one. 
+        -While looping through food to update it: average the accumulated repulsion force, with a method on the food, and add it to the food's acceleration (so append velocity); reset the target count. 
+3.  fix the bug ☺ that prevents the largest bees from being deleted with the DELETE key
+☑   make food rotate based on life 
+5.  Replace some of the same functionality from Bee and Food with that from a parent object type, like Mover
+6.  BIG GOAL: MAKE EACH BEE'S GENETICS DEVIATE FROM THE LAST BEST LIVING BEE'S GENETICS, HOWEVER DEVIATE HOW MUCH IS JUST UNCLEAR. USING STANDARD DEVIATION? HOW DO YOU DECIDE THE DEVIATION? THE BEE JUST STOPS GETTING BETTER AT ONE POINT. I GUESS ALL OF THE BEES CAN'T BE ALL PERFECT. STANDARD DEVIATION IT IS. NOW, DECIDE THE PROPERTIES TO DEVIATE. YEP.
+**/
+
+var bees = [];
+var beeIndex = 0;
+var longestLife = 0;
+var longestLiving = 0;
+var bestBee = null;
+var food = [];
+var foodIndex = 0;
+var target = null;
+var smallestDist = null;
+var keys = [];
+var f = frameCount, b = 25; //background
+rectMode(CENTER);
+
+/**BEE "CLASS?"*/
+var Bee = function() {
+    //degrees for rotation to input in sin/cos
+    this.angle = 0; 
+    //how much degree increments, the less the increment, the less orbit, the motion becomes a hazy random slow walk 
+    this.angleIncrementation = random(-50, 50); 
+    //these affect the movement of the midpoint of each orbiting bee. Don't move too fast! 
+    this.velocity = new PVector(0, 0);
+    this.acceleration = new PVector(0, 0);
+    this.midpoint = new PVector(width/2-random(-100, 100), height/2-random(-100, 100));
+    this.positionBee = new PVector(this.midpoint.x, this.midpoint.y);
+    //density = ~1.5g/mL
+    this.volume = random(3, 6);
+    this.mass = random(1, 5)*this.volume;
+    this.G = random(0.5, 1.0);
+    //implement damage to food instead of touch kill, making it harder on small guys for big food
+    this.damage = this.volume;
+    //when applied to wobble force
+    //make 1/2 of calcAttraction(target)
+    //and proportional to volume (volume: on a role!)
+    //so about volume / volume /  .3 / 2 ≈ V/30
+    this.amtWobble = this.volume/random(0.2, 20);
+    //will be applied as the constant coefficient for bee friction
+    this.coefficient = random(0.001, 0.5);
+    
+    //how much to multiply the cos/sin values, which are between -1 and 1 I think
+    this.stretchX = random(10, 30);
+    this.stretchY = random(10, 30); 
+    this.red = random(30, 40);
+    this.green = random(80, 90);
+    this.blue = random(80, 90);
+    
+    this.tag = beeIndex;
+    bees[beeIndex] = this;
+    beeIndex++;
+    this.lifeDecrement = 1;
+    //new feature: if health (food amt) decreases, death!
+    this.life = random(75, 125)*this.volume;
+    this.living = true;
+    this.livingTime = 0; //keep track (once program improves) of most adapted bees (not really, their "genetics" is random)
+};
+
+Bee.prototype.update = function() {
+    if (mouseIsPressed) { this.angleIncrementation*=-1; }
+    //calculate and scale the new position revolving around midpoint
+    this.positionBee = new PVector(this.midpoint.x+cos(this.angle)*this.stretchX, this.midpoint.y+-sin(this.angle)*this.stretchY);
+    this.velocity.add(this.acceleration);
+    this.midpoint.add(this.velocity); //midpoint with random acceleration
+    this.acceleration.mult(0);
+    this.angleIncrementation += random(-0.2, 0.2);//revolution accelerates too
+    this.angle+=this.angleIncrementation/this.mass;
+    
+    this.wrap(this.positionBee);
+    if (this.livingTime > longestLiving) {
+        longestLiving = this.livingTime;
+        //prevent giants from dominating forever. Yep. Reproduction isn't going to work. Unless I maybe spawn 20 at a time, wait for all to die or given time, and make a deviation for the next generation to be a little more like the best bug. This also increases competition for largest because big food=more chance to be eaten. Alright I'm done. 
+        this.lifeDecrement = 3;
+    }
+    this.livingTime++;
+    this.life-=this.lifeDecrement;
+    this.death();
+};
+
+Bee.prototype.calcAttraction = function(food) {
+    var G = this.G;
+    //var G = random(0.5, 1.0);
+    // Calculate direction of force
+    var force = PVector.sub(food.position, this.midpoint);
+    // Distance between objects
+    var distance = force.mag();
+    // Limiting the distance to eliminate "extreme" results for very close or very far objects
+    distance = constrain(distance, 7.5, 20.0);
+    // Normalize vector (distance doesn't matter here, we just want this vector for direction                            
+    force.normalize();
+    // Calculate gravitional force magnitude
+    var strength = (G * this.mass * food.mass) / (distance * distance) * (1+this.calcFriction().mag());
+    // Get force vector --> magnitude * direction
+    force.mult(strength);
+    return force;
+};
+
+Bee.prototype.calcFriction = function() {
+    var normal = 1;
+    var frictionMag = this.coefficient * normal;
+    var friction = this.velocity.get();
+    friction.mult(-1);
+    friction.normalize();
+    friction.mult(frictionMag);
+    return friction;
+};
+
+Bee.prototype.applyForce = function(force) {
+    var f = PVector.div(force, this.mass);
+    this.acceleration.add(f);
+};
+
+Bee.prototype.wrap = function(vector) {
+    if (vector.x !== constrain(vector.x, -100, width+100)) {
+        vector.x = abs(vector.x-width-200);
+    } else if (vector.y !== constrain(vector.y, -100, height+100)) {
+        vector.y = abs(vector.y-height-200);
+    }
+};
+
+Bee.prototype.setTarget = function(f) {
+    var checkTarget = f;
+    var checkDist = dist(this.midpoint.x, this.midpoint.y, checkTarget.position.x, checkTarget.position.y);
+    if(smallestDist===null){
+        smallestDist = checkDist;
+        target = checkTarget;
+    } else if (checkDist < smallestDist){
+        smallestDist = checkDist;
+        target = checkTarget;
+    }
+    return [target, smallestDist];
+};
+
+Bee.prototype.grow = function(f) {
+    var xInside = this.positionBee.x === constrain(this.positionBee.x, f.position.x-f.volume/2,f.position.x+f.volume/2);
+    var yInside = this.positionBee.y === constrain(this.positionBee.y, f.position.y-f.volume/2,f.position.y+f.volume/2);
+    var rank = 5;
+    if (xInside && yInside) {
+        f.health -= this.damage;
+        f.checkDeath();
+        if (!f.living) {
+            this.red+=45;
+            this.green-=35;
+            this.blue-=35;
+            this.life+=this.red*rank;
+            if (this.red > 254) {
+                this.green = this.blue = this.red = 255;
+                rank++;
+            }
+            //big prize for the small, small prize for the big
+            this.volume+=f.volume/this.volume;
+        } else {
+            f.red -= 75;
+            f.green += 75;
+        }
+    }
+};
+
+Bee.prototype.display = function() {
+    fill(this.red, this.green, this.blue);
+    ellipse(this.positionBee.x, this.positionBee.y, this.volume, this.volume);
+    //i'm changing volume based on mass, but changing to make it accurate to density. meaning the mass will be greater than the volume
+    fill(this.red, this.green, this.blue, 50);
+    ellipse(this.midpoint.x, this.midpoint.y, 4, 4);
+};
+
+Bee.prototype.displayLine = function(target) {
+    stroke(30);
+    //color largest bee's target line gold
+    if (this.livingTime>=longestLiving) {
+        stroke(255, 255, 0);
+    } 
+    line(target.position.x, target.position.y, this.midpoint.x, this.midpoint.y);
+    noStroke();
+};
+
+Bee.prototype.death = function() {
+    var disease = random(1)<0.0001;
+    if (this.life < 0 || disease) {
+        if (disease) {
+            println("Died by disease");
+        }
+        this.living=false;
+        beeIndex--;
+    }
+    
+};
+/**FOOD CLASS/CONSTRUCTOR*/
+var Food = function() {
+    this.position = new PVector(random(10, width-10), random(10, height-10));
+    this.velocity = new PVector(0, 0);
+    this.acceleration = new PVector(0, 0);
+    this.tag = foodIndex;
+    food[foodIndex] = this;
+    foodIndex++;
+    this.living = true;
+    this.volume = (bestBee !== null ? random(6, bestBee.volume) : random(6, 8));
+    this.mass = this.volume*2;
+    this.life = constrain(random(this.volume*35, this.volume*70), 0, 500);
+    this.health = this.volume;
+    this.red = 255;
+    this.green = 20;
+    this.amtRotate = 0;
+    this.targetCount = 0;
+    this.accumRepulsion = new PVector(0, 0);
+};
+
+Food.prototype.update = function() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+    this.life--;
+    this.volume-=0.001;
+    this.red-=0.5;
+    this.targetCount = 0;
+    this.accumRepulsion.mult(0);
+    this.checkDeath();
+    this.amtRotate+=this.life/50/(this.mass/10);
+};
+
+Food.prototype.calcRepulsion = function() {
+    this.accumRepulsion.div(this.targetCount);
+    return this.accumRepulsion;
+};
+
+Food.prototype.applyForce = function(force) {
+    var f = PVector.div(force, this.mass);
+    this.acceleration.add(f);
+};
+
+Food.prototype.checkDeath = function() {
+    if (this.life <= 0 || this.health <= 0) {
+        this.living = false;
+    }
+};
+
+Food.prototype.display = function() {
+    pushMatrix();
+    translate(this.position.x, this.position.y);
+    rotate(this.amtRotate);
+    fill(this.red, this.green, 100);
+    rect(0, 0, this.volume, this.volume);
+    popMatrix();
+};
+
+keyPressed = function() {
+    keys[keyCode] = true;
+    if (keys[ENTER]) {
+        new Bee();
+    }
+    if (keys[BACKSPACE]) {
+        if (beeIndex>0) {
+            bees[bees.length-1].living = false;
+            bees.pop(); //remove last element from array
+            beeIndex--; //because that index is now undefined, we need to set it to new Bee() when ENTER
+        }
+    }
+};
+
+keyReleased = function() {
+    keys[keyCode] = false;
+};
+
+var backgrounds = function() {
+    switch (frameCount-f>=50) {
+        case true:
+            f = frameCount;
+            b+=50;
+            break;
+        case false:
+            b = 25;
+            break;
+    }
+    //ternary (khan, pls support):
+    /*frameCount-f>=50 ? (f=frameCount, b+=50) : b=25;*/
+    noStroke();
+    fill(0, 0, 0, b);
+    rect(width/2, height/2, width, height);
+    
+    fill(f);
+    textFont(createFont("monospace"), 12);
+    text("Options:\nClick\nENTER\nDELETE", 10, 10);
+    if (f<256) { f++; } //deal with it
+};
+/**EXECUTION*/
+draw = function() {
+    var trackLongest = longestLife;
+    backgrounds();
+//BEE
+    for (var i in bees) { 
+    //for every living bee: reset the target. for every living food: find the closest food to current bee. set as target. repeat. 
+        if (bees[i].living) {
+            target = null;
+            smallestDist = null; 
+            for (var j in food) {
+                if(food[j].living){
+                    target = bees[i].setTarget(food[j])[0];
+                    smallestDist = bees[i].setTarget(food[j])[1];
+                    bees[i].grow(food[j]);
+                }
+            }
+            //if there's a target
+            if(target!==null){
+                //based on gravity formula
+                var foodAttraction = bees[i].calcAttraction(target);
+                bees[i].applyForce(foodAttraction);
+                bees[i].displayLine(target);
+                //reset these foods' properties
+                target.targetCount++;
+                target.accumRepulsion.add(bees[i].acceleration.get());
+            }
+            //apply motion
+            var wobble = new PVector(random(-bees[i].amtWobble, bees[i].amtWobble), random(-bees[i].amtWobble, bees[i].amtWobble));
+            var friction = bees[i].calcFriction();
+            bees[i].applyForce(friction);
+            bees[i].applyForce(wobble);
+            bees[i].update();
+            bees[i].display();
+        } else {
+            if (bees[i].livingTime > longestLife) {
+                longestLife = bees[i].livingTime;
+                bestBee = bees[i];
+            }
+            bees.splice(i, 1);
+        }
+    }
+//FOOD
+    for (var i in food) {
+        if (food[i].living) {
+            var repulsion = food[i].calcRepulsion();
+            food[i].applyForce(repulsion);
+            food[i].update();
+            food[i].display();
+        } else {
+            food.splice(i, 1);
+        }
+    }
+    //removed the test note. Basically, all functioning of the bee stops once it's dead. Therefore, it is best to set all functioning based on a boolean, "living". The method to kill the bee is too based on that boolean. There. 
+    
+    if (random(1)<0.02) {
+        new Bee();
+    }
+    if (random(1)<random(0.002, 0.02)){
+        new Food();
+    }
+    if (trackLongest !== longestLife) {
+        println("Longest life-time: "+longestLife+" frames");
+    }
+};
