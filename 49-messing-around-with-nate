@@ -1,0 +1,14 @@
+noStroke();
+draw = function() {
+    fill(255, 255, 255, 20);
+    rect(-1, -1, width+1, height+1);
+    pushMatrix();
+    translate(200, 200);
+ 
+    for(var i = 0; i < frameCount/18; i++){
+        rotate(sin(frameCount)*2.3);
+        fill(abs(cos(frameCount/5))*100, abs(sin(frameCount/5))*100, abs(cos(frameCount/5))*100, 7);
+        ellipse(-i*1, -i*0.4, 315, 12);  
+    }
+    popMatrix();
+};
