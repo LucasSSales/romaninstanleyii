@@ -1,0 +1,101 @@
+/**DESCRIPTION:
+ * fixed bugs (    :]    )
+ * delay more precise to target
+ * target displays range
+ * good information table
+ * visual--colors, black bg
+ * 
+ * NEXTOBJECTIVES:
+ * determine what to do with non successful organisms
+ * bloodlines, so unsuccessful parents will no longer produce as organisms dont randomly pop up
+ * conclusion: least fittest stop reproducing; children have slight deviation from parents producing better concept of mutation; most fittest procreate w/ more children, least fittest maybe less children... i was a thriving, breathing statistical model of evolution by natural selection
+ * 
+ * graph percent of genetics w/ perfect aim over time--is it exponential or linear? geometric or arithmetic?
+ * 
+ * THIS IS ALL ROMAN MIROV
+ */
+
+var initial = 36;
+var index = 0;
+var population = [];
+var performances = [];
+var genetics = [];
+var target = new PVector(random(175, 300), random(175, 300));
+var first = true; //track first gen
+var perfects = 0; //track amount who passed on their genes
+var range = 13; 
+
+var Org = function(){
+    this.genetics = !first && performances[index]<=range ? new PVector(genetics[index].x, genetics[index].y) : new PVector(random(-5, 30), random(-5, 30)); //for now, just means that if its close enough, itll pass on its genes
+    if(!first && performances[index]<=range){   perfects++;}
+    this.pos = new PVector(50, 50);
+    this.inc = this.genetics.get();
+    this.inc.normalize();
+    this.speed = this.inc.get();
+    this.speed.mult(3.5);
+    this.inc.mult(20);
+    this.nextPos = this.pos.get();
+    this.nextPos.add(this.inc);
+    population[index] = this;
+    genetics[index] = this.genetics;
+    this.index = index;
+    index++;
+};
+
+Org.prototype.draw = function() {
+    if(performances[this.index]<=range){
+        stroke(0, 255, 0);
+    } else{
+        stroke(255, 0, 0);
+    }
+    line(this.pos.x, this.pos.y, this.nextPos.x, this.nextPos.y);
+    
+    this.pos.add(this.speed); 
+    this.nextPos.add(this.speed);
+};
+
+for(var i = 0; i<initial; i++){
+    new Org();
+}
+noFill();
+println("Average distances:"+"  |  "+"Successful genes: |");
+println("––––––––––––––––––––|––––––––––––––––––––|");
+draw = function() {
+    background(0);
+    var travel = population[0].nextPos.get();
+    travel.sub(50, 50, 0);
+    var targetCoord = target.get();
+    targetCoord.sub(50, 50, 0);
+    //compare radii
+    if(travel.mag()>=targetCoord.mag()){
+        //reset the population
+        index = 0; 
+        while(index<initial){
+            performances[index] = dist(population[index].nextPos.x, population[index].nextPos.y, target.x, target.y);
+            population[index] = new Org(); //index incremented within Org object 
+            //so before wiping out the parent, save its performance/data 
+        }
+        //display average distances from target and organism genes passed
+        var average = 0;
+        for(var i = 0; i<performances.length; i++){
+            average+=performances[i];
+        }
+        average=round(average/performances.length);
+        var averageDigits = average.toString().length;
+        var perfectsDigits = perfects.toString().length;
+        
+        println("      "+average+(averageDigits===2 ? " " : "")+
+            "           |          "+
+            perfects+(""+perfectsDigits===2 ? -"" : perfectsDigits===1 ? " " : "")+"        |");//it works. that's it.
+        println("––––––––––––––––––––|––––––––––––––––––––|"); 
+        
+        perfects = 0;
+    }
+    
+    for(var i = 0; i<population.length; i++){
+        population[i].draw(); //make it move
+        first = false;
+    } 
+    stroke(255);
+    ellipse(target.x, target.y, range, range);
+};
