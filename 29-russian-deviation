@@ -1,0 +1,27 @@
+//aug 2016
+
+var generator = new Random(1);
+var newVariableSpeed = 2048;
+frameRate(0);
+draw = function() {
+    background(255);
+    var deviation = 50;
+    
+    if (mouseIsPressed) {  
+        for (var i = 0; i < newVariableSpeed; i++) {
+            var x = generator.nextGaussian() * deviation + mouseX;
+            var y = generator.nextGaussian() * deviation + mouseY;
+            
+            if (y < random(height/3, height/3+60)) {
+                fill(random(200, 255));
+            } else if (y < random(height-height/3, height-height/3+60)) {
+                fill(0, 0, random(200, 255));
+            } else {
+                fill(random(200, 255), 0, 0);
+            }
+            noStroke();
+            
+            ellipse(x, y, random(5, 10), random(5, 10));
+        }
+    }
+};
