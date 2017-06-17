@@ -1,0 +1,111 @@
+/**This concept uses perlin noise to walk and optimizes or completely changes some of the existing functionality or creates new functionality. 
+ * Roman Mirov 2016
+ * 
+*/
+
+var walkers = [];
+var walkerCount = 0;
+var keys = [];
+
+var Walker = function() {
+    this.id = walkerCount;
+    walkerCount++;
+    //widened view
+    this.x = width/2;
+    this.y = height/2;
+    this.xtime = random(1);
+    this.ytime = -random(1);
+    this.inc = 0.50;
+    this.r = random(50,255);
+    this.g = random(50,255);
+    this.b = random(59,255);
+    this.cDeviation = 3;
+    this.sizeCell = width/random(50, 100);
+    this.trackMove = function(axis){
+        return map(noise(axis), 0, random(0.92, 0.96), -1, 1);
+    };
+    //ok. so to prevent diagonal moves cos it looks to checkerboard to me
+    //i've made it so that if xstep is < or > 0, ystep is 0, and vice versa
+    //start with one variable--track whether motion is vertical or not
+    this.verticalTurn = false;
+    this.life = 1/this.sizeCell*10000; //smaller live longer
+};
+
+Walker.prototype.display = function() {
+    noStroke();
+    fill(this.r,this.g,this.b);
+    rectMode(CENTER);
+    rect(this.x,this.y,this.sizeCell,this.sizeCell, 2);
+};
+
+Walker.prototype.changeColor = function(){
+    this.r+=random(-1, 1)*this.cDeviation;
+    this.g+=random(-1, 1)*this.cDeviation;
+    this.b+=random(-1, 1)*this.cDeviation;
+};
+
+Walker.prototype.walk = function(){
+    this.life--;
+    //smoother better motion
+    //increment time of noise
+    this.xtime+=this.inc;
+    this.ytime+=this.inc;
+    //transform the noise value to either LEFT, RIGHT, or STILL
+    this.xstep=(this.trackMove(this.xtime)>0?this.sizeCell:this.trackMove(this.xtime)<0?-this.sizeCell:0);
+    this.ystep=(this.trackMove(this.ytime)>0?this.sizeCell:this.trackMove(this.ytime)<0?-this.sizeCell:0);
+    //prevent diagonals as they leave too many holes
+    if(this.verticalTurn){
+        //if you moved vertically dont move horiz
+        if(this.ystep!==0){
+            this.xstep = 0;
+        }
+        this.verticalTurn=!this.verticalTurn;
+    } else {
+        //if moved horiz dont move vert
+        if(this.xstep!==0){
+            this.ystep = 0;
+        }
+        this.verticalTurn=!this.verticalTurn;
+    }
+    //add to coordinates
+    this.x+=this.xstep;
+    this.y+=this.ystep;
+    
+    //wrap
+    if(this.x!==constrain(this.x, 0, width)){
+        this.x=abs(this.x-width);
+    }
+    if(this.y!==constrain(this.y, 0, height)){
+        this.y=abs(this.y-height);
+    }
+};
+
+//add walkers
+for(var i = 0; i < 1; i++){
+    walkers.push(new Walker());
+}
+//main
+background(0);
+var draw = function() {
+    text("press enter", 5, 11);
+    for(var i = 0; i < walkers.length; i++){
+        if(walkers[i].life>0){
+            walkers[i].walk();
+            walkers[i].changeColor();
+            walkers[i].display();
+        }
+    }
+};
+
+keyPressed = function(){
+    keys[keyCode] = true;
+};
+keyReleased = function(){
+    keys[keyCode] = false;
+};
+keyTyped = function(){
+    if(keys[ENTER]){
+        walkers.push(new Walker());
+    }
+};
+
