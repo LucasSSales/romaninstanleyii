@@ -1,0 +1,37 @@
+ var mouse = new PVector(width, height);
+var xBoundary = 1, yBoundary = 1;
+var tilt = 1;
+var keys = [];
+draw = function() {
+    if (mouseIsPressed) {
+        for (var i = 0; i < dist(mouse.x, mouse.y, mouse.x+xBoundary, mouse.y+yBoundary); i++) {
+            //noStroke();
+            var particle = new PVector(mouse.x+i*xBoundary, mouse.y+i*yBoundary/5);
+            var xColor = map(particle.x, 0, 400, 0, 255);
+            var yColor = map(particle.y, 0, 400, 0, 255);
+            fill(xColor, xColor, yColor);
+            ellipse(particle.x, particle.y, 10, 10);
+        }
+    }
+    mouse.set(mouseX, mouseY);
+};
+//these two functions useful here so that when multiple keys are being pushed, one isn't always true, that being taken care of by the release function
+keyPressed = function() {
+    keys[keyCode] = true;
+    if (keys[UP]) {
+        yBoundary--;
+    }
+    if (keys[DOWN]) {
+        yBoundary++;
+    }
+    if (keys[RIGHT]) {
+        xBoundary+=0.1;
+    }
+    if (keys[LEFT]) {
+        xBoundary-=0.1;
+    }
+};
+keyReleased = function() {
+    keys[keyCode] = false;
+};
+//I call it that because my account from a year ago was deleted along with my first programs as I learnt the basics, this idea being one of them;
