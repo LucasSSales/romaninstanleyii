@@ -1,0 +1,22 @@
+var detail = 4;
+var time = 25.932;
+var noiseHue = 255;
+var altitude = 4.2;
+
+draw = function(){
+    pushMatrix();
+    translate(0, height);
+    rotate(-90);
+    for(var i = 0; i < width/detail; i++){
+        for(var j = 0; j < height/detail; j++){
+            var opacity = noise(i/(height/detail)*altitude+time, j/(height/detail)*altitude, time*3);
+            colorMode(HSB);
+            //when adding the hue based on the position on the screen, you get colors that intensify in blue more to the right. so i transformed it
+            fill(opacity*noiseHue*(i/75), 255, 255);
+            noStroke();
+            rect(i*detail, j*detail, detail, detail);
+        }
+    }
+    popMatrix();
+    time+=0.004;
+};
