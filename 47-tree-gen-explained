@@ -1,0 +1,36 @@
+/**Coded by Tazal, explained by Roman "roma"
+ * Haven't learned radians yet, so give me time to explain the maths part...
+*/
+var detail = 4; //used in if statement for drawing branches, musn't exceed 10
+var fractalDepth = 1.1; //to recurse even more by multiplying the newsize produced for each of the three branches
+
+var branch= function(oldx,oldy,currentSize,a){
+    strokeWeight(currentSize*0.1);
+    stroke(75+1/currentSize*150, 40+1/currentSize*200, 40+1/currentSize*100);
+    //crazy part
+    var newx = oldx+cos(a)*currentSize; 
+    var newy = oldy+sin(a)*currentSize;
+    
+    line(oldx,oldy,newx,newy); //draw THIS branch
+    
+    //call next branches long as max detail not exceeded
+    if(currentSize>1/detail*16){
+        
+        /*every branch will stem three more branches, each given a passed size that is ~3/4 times the previous size
+        also the random number to generate size determines how much depth you want in the fractal*/
+        branch(newx, newy, currentSize*random(0.55, 0.75)*fractalDepth, a-radians(random(0, 2000))); //left stemming branch of branches
+        branch(newx, newy, currentSize*random(0.55, 0.80), a+radians(random(0, 2000))); //one of the right stemming branches
+        branch(newx, newy, currentSize*random(0.55, 0.70), a+radians(random(0, 2000)));
+    }
+    
+    /*before, compared size to decide whether to draw leaves or not from the bottom up, so if E>something, making wierd leaves on trunk itself. To compare top down, use inverse e, or 1/e. 
+    so I eliminated e. E tracked the size*0.1 before updating in calling of three branches. Since the three branches decrement the size by a factor of random(0.55, 0.75), multiply currentsize by random(0.55, 0.75) to get the old size back, then * 0.1 to get e. range between 0.55 and 1.00 produces higher quantity of leaves :)*/
+    if(1/((currentSize/random(0.55, 1.00))*0.1)>2.9) {
+        stroke(56, 168,0,30);
+        strokeWeight(6);
+        point(newx,newy); 
+    }
+};
+
+background(200);
+branch(240,height,93,radians(160000));
