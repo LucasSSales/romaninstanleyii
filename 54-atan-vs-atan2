@@ -1,0 +1,53 @@
+/**From a comment about the difference between the two on "Pointing Towards Movement". Rotation based on direction/velocity (vector) requires an angle derived from trigonometric formulas, in this case the inverse tangent formula tangent(theta)=opposite/adjacent = dirY/dirX, theta=arctan(dirY/dirX)
+ * However the arctangent returns an angle pointing towards quadrant 4 even if x is negative and y is positive or y is negative and x is positive, and an angle towards quadrant 1 whether both y and x are negative or both are positive. This is because atan() provides an angle based on the value dirY/dirX produces, the quotient. 
+ * atan2() takes two parameters, the y and the x (same thing as dirY, dirX, dy, dx...), individually and outputs a value (the angle) based on the evaluation of x and y. 
+ * Here's Bob Lyon's more mathematical explanation: 
+ * 
+    "atan is a trigonometric function that maps a slope to an angle measure. The slope from (0, 0) to (5, 5) is one, as is the slope from (0, 0) to (-5, -5). Yet those two points are 180° apart from one another with respect to the origin. Specifically, atan only returns angle measures between -90° and +90°, so its values will be disappointing when the mouse is in Quadrants 2 or 4, relative to the mover.
+    "In contrast, atan2 returns angle measures that encompass the entire circle, -180° to + 180°. So the angle measure to (5, 5) is 45° and the angle measure to (-5, -5) is -135°, and of course the absolute value of the difference of the two angles is 180° as I indicated above."
+    
+    *This code was provided by Dalendrion. Even though he didn't need an attribution, we still thank him. 
+    * -
+     |
+    \_/
+ */
+var centerX = width / 2;
+var centerY = height / 2;
+
+var getAngleAtan = function(x, y) {
+    var dx = mouseX - x;
+    var dy = mouseY - y;
+    var angle = dy / dx;
+    return atan(angle);
+};
+
+var getAngleAtan2 = function(x, y) {
+    var dx = mouseX - x;
+    var dy = mouseY - y;
+    return atan2(dy, dx);
+};
+
+var foo = function(x, y, getAngle) {
+    var angle = getAngle(x, y);
+    println(angle);
+    pushMatrix();
+    translate(x, y);
+    rotate(angle);
+    fill(255);
+    ellipse(0, 0, 20, 20);
+    fill(0);
+    triangle(-7, -5, -7, 5, 9, 0);
+    popMatrix();
+};
+
+textAlign(CENTER, BASELINE);
+
+draw = function() {
+    background(128, 192, 255);
+    
+    foo(centerX + 30, centerY, getAngleAtan);
+    text("atan", centerX + 30, centerY + 20);
+    
+    foo(centerX - 30, centerY, getAngleAtan2);
+    text("atan2", centerX - 30, centerY + 20);
+};
