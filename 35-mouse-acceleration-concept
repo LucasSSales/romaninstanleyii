@@ -1,0 +1,51 @@
+// Adapted from Dan Shiffman, natureofcode.com
+//Step 1: (For macs, "COMMAND"+"-"; for win, "CTRL"+"-") minimize the browser screen to minimum (25% for me)
+//Step 2: copy and paste the following to the end of the URL
+//?width=5000&height=5000
+
+var Mover = function() {
+    this.position = new PVector(mouseX, mouseY);
+    this.velocity = new PVector(0, 0);
+    this.acceleration = new PVector(0, 0);
+    this.angle = 1;
+};
+
+Mover.prototype.update = function() {
+    var mouse = new PVector(mouseX, mouseY);
+    var dir = PVector.sub(mouse, this.position);
+    dir.normalize();
+    //dir.mult(2);
+    this.acceleration = dir;
+    this.velocity.add(this.acceleration);
+    //this.velocity.limit(5);
+    this.position.add(this.velocity);
+    this.angle+=5;
+};
+
+Mover.prototype.display = function() {
+    stroke(0);
+    strokeWeight(2);
+    fill(127);
+    pushMatrix();
+    translate(this.position.x, this.position.y);
+    rotate(this.angle);
+    rect(this.position.x-this.position.x, this.position.y-this.position.y, 48, 48);
+    popMatrix();
+};
+
+
+var mover = new Mover();
+
+draw = function() {
+    background(255, 255, 255);
+    
+    mover.update();
+    mover.display(); 
+    ellipse(width/2, height/2, 50, 50);
+};
+
+
+mousePressed = function() {
+    
+    Program.restart();
+};
