@@ -1,0 +1,37 @@
+var keys = [];
+//if a key is pressed store it's keyCode in an array
+keyPressed=function(){
+    keys[keyCode]=true;//keyCode is the special variables UP, LEFT, etc
+};
+//if they release a key basically just undo what the last function did
+keyReleased=function(){
+    keys[keyCode]=false;
+};
+
+rectMode(CENTER);
+var draw= function() {
+    background(255);
+    noFill();
+    if(keys[SHIFT]){
+        fill(255, 0, 0);
+    }
+    rect(200,100,120,120);
+    noFill();
+    if(keys[ALT]){
+        fill(255, 0, 0);
+    }
+    rect(300,200,120,120);
+    noFill();
+    if(keys[DOWN]){
+        fill(255, 0, 0);
+    }
+    rect(200,300,120,120);
+    noFill();
+    if(keys[LEFT]){
+        fill(255, 0, 0);
+    }
+    rect(100,200,120,120);
+    fill(0);
+    text("SHIFT for UP,\nALT/OPTION for RIGHT,\nDOWN for DOWN, \nLEFT for LEFT", 19, 19);
+    //text("keys: "+keys[
+};
