@@ -1,0 +1,214 @@
+/**My programming experience
+copyrighted Roman Mirov december 28, 2016
+TODO: 
+-make real "smooth" lines using bezier(?)
+nope. no bezier needed. i have a plan, a model, in my mind. -2/16/12017
+*/
+
+//data--ordered 0-11 (so far) in order of time learned of these languages
+var sheet1 = [
+    {
+        language: "processing.js", 
+        experience: 4.5/5
+    }, {
+        language: "html", 
+        experience: 4/5
+    }, {
+        language: "css",
+        experience: 4/5
+    }, {
+        language: "processing",
+        experience: 3/5
+    }, {
+        language: "javascript",
+        experience: 3.5/5
+    }, {
+        language: "python", 
+        experience: 2/5
+    }, {
+        language: "arduino", 
+        experience: 3/5
+    }, {
+        language: "jquery",
+        experience: 2/5
+    }, {
+        language: "php",
+        experience: 0.5/5
+    }, {
+        language: "swift",
+        experience: 2/5
+    }, {
+        language: "c", 
+        experience: 3/5
+    }, {
+        language: "mql",
+        experience: 1.5/5
+    }
+];
+var barSpace = 550/sheet1.length;
+var showCount = 0;
+var cd = 187.5; //cross depth; look at like ~160
+//button variables
+var buttons = [];
+var buttData = [
+    {
+        title: "bars",
+        on: false
+    }, {
+        title: "lines", 
+        on: true
+    }, {
+        title: "points", 
+        on: true
+    }, {
+        title: "web (avg)",
+        on: false
+    }, {
+        title: "curve (avg)",
+        on: true
+    }
+];
+var buttIndex = 0;
+var slow = true;
+textFont(createFont("monospace"), 9);
+frameRate(5);
+
+//useful function for points 
+//please credit me if you take from this program
+//cos you know its awesome and took work (math)
+var calcPVector = function(i){
+    return new PVector(27+barSpace*(i+1/2), 
+    375-sheet1[i].experience*350); 
+};
+
+var Button = function(){
+    buttons[buttIndex] = this;
+    this.id = buttIndex;
+    buttIndex++;
+    this.txt = buttData[this.id].title;
+    this.x = 50+this.id*500/buttData.length;
+};
+Button.prototype.draw = function() {
+    
+    if(buttData[this.id].on){
+        fill(0, 255, 0, 50);
+    } else {
+        fill(255, 0, 0, 50);
+    } 
+    if(mouseIsPressed&&this.isInside()){
+        fill(180, 180, 180, 50);
+    }
+    rect(this.x, 450, 400/buttData.length, 30, frameCount/3);
+    if(buttData[this.id].on){
+        fill(0, 130, 0);
+    } else {
+        fill(150, 0, 0);
+    }    
+    text(this.txt, this.x+15, 470);
+};
+Button.prototype.update = function(){
+    if(this.isInside()){
+        //!= would be a cool assignment operator
+        buttData[this.id].on = !buttData[this.id].on;
+    }
+};
+Button.prototype.isInside = function(){
+    if(mouseX<this.x+100&&mouseX>this.x&&mouseY>450&&mouseY<480){
+        return true;
+    }
+};
+
+//main
+draw = function() {
+    fill(230, 230, 230, 35);
+    rect(-1, -1, width+2, height+2);
+    fill(0);
+    text("My programming knowledge chart", 200, 19);
+    //y axis
+    line(25, 375, 25, 25);
+    for(var i = 0; i < 5; i++){
+        line(20, 25+i*70, 30, 25+i*70);
+        text(i+1, 7, 310-i*70);
+    }
+    //x axis
+    line(25, 375, 25+showCount*barSpace, 375);
+    for(var i = 0; i < showCount; i++){
+        strokeWeight(1);
+        stroke(0);
+        line(25+(i+1)*barSpace, 370, 25+(i+1)*barSpace, 380);
+        //text
+        pushMatrix();
+        translate(25+275/sheet1.length+i*550/sheet1.length, 385);
+        rotate(45);
+        text(sheet1[i].language, 0, 0);
+        popMatrix();
+        
+        /**MEAT OF CODE*/
+        noFill();
+        //bars
+        if(buttData[0].on){
+            rect(calcPVector(i).x-barSpace/2, calcPVector(i).y, barSpace-4, sheet1[i].experience*350);
+        } 
+        //points
+        if(buttData[2].on){
+            strokeWeight(5);
+            stroke(0, 0, 255);
+            point(calcPVector(i).x, calcPVector(i).y);
+            strokeWeight(1);
+        }
+        //lines
+        if(buttData[1].on&&i<sheet1.length-1){
+            stroke(75, 25, 75);
+            line(calcPVector(i).x, calcPVector(i).y, calcPVector(i+1).x, calcPVector(i+1).y);
+        }
+        //excitment for something way bigger than just mid-points average line now... 
+        if(buttData[3].on&&i<sheet1.length-2||buttData[4].on&&i<sheet1.length-2){
+            strokeWeight(1);
+            stroke(255, 0, 0);
+            var x1 = calcPVector(i).x, y1 = calcPVector(i).y, x2 = calcPVector(i+1).x, y2 = calcPVector(i+1).y, x3 = calcPVector(i+2).x, y3 = calcPVector(i+2).y;
+            var distance1 = new PVector(x2-x1, y2-y1),
+            distance2 = new PVector(x3-x2, y3-y2);
+            //YES! what i get from this is that not calling a function, calc, 100 times per 12 times per frame but storing it in a variable increases the speed infinitely better
+            for(var j = 100; j>=1; j-=0.05){
+                if(buttData[3].on){
+                    line(x1+distance1.x/j,
+                    y1+distance1.y/j,
+                    x2+distance2.x/j,
+                    y2+distance2.y/j);
+                }
+                if(buttData[4].on){
+                    point(x1+distance2.x/j, y1+distance2.y/j);
+                }
+            }
+        }
+    }
+    
+    stroke(0);
+    strokeWeight(1);
+    if(showCount<12){
+        showCount++;
+    } else{
+        //i'm very proud of my code. kneel down and hail me;
+        if(slow){
+            for(var i = 0; i < buttData.length; i++){
+                new Button();
+            }
+            frameRate(30);
+        }
+        slow=false;
+        for(var i = 0; i < buttons.length; i++){
+            buttons[i].draw();
+        }
+    }
+};
+
+mouseClicked = function(){
+    for (var i = 0; i < buttons.length; i++){
+        buttons[i].update();
+    }
+};
+
+
+
+
+
