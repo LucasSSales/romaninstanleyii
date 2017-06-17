@@ -1,0 +1,148 @@
+/**
+ * Thank you @cire3791 for help!
+SIMULATION: bee flying in classic cartoon style loops 
+Y MOVEMENT: y movement is sine wave, x movement more complex
+X MOVEMENT: at intervals of half a second (500ms) the direction of x will reverse. If the x is pointed forward, the magnitude will be, for example of 3 loops on screen, 200px. If backwards; 100px. 3*(+200-100) = 300px = fullscreen 3 loops starting at 100px.
+EDIT: This works with velocity, with constant speed and no acceleration. Without acceleration, when the mover turns the other direction, the sharp point produced by a sharp turn on x axis and smooth sine wave on y axis destroys the loops. But, acceleration is tricky. Like, not v=d/t but a=d/t/t tricky.
+***
+I've tried accelerating. Here's my calculation for constant acceleration to reach 200 pixels in .5 seconds:
+dir.mag = 200, let a = acceleration, velocity = {0, a, 2a, 3a, 4a.....30a}, 30a because .5 seconds = 1/2*60fps, 
+dir = {a+2a+3a+4a+5a+6a....+30a}, dir = a*(30^2+30)/2, a = dir/465
+NOTE: commas in sets represent a new frame
+The only problem with this is that it only accounts for forward movement. Fine, why not, set dir to destination.x-position.x, right? Well, after 500ms the velocity would be so great that halving the acceleration and subtracting that from velocity would merely slow the mover down. EVEN subracting all of the acceleration (amounts to 200px/30fps) would bring velocity down to 0, which wouldn't turn it around. If you set the backwards acceleration to twice that of forward, well, then the mover would forever accelerate backwards after .5 seconds. 
+So... do I set a rule, that after every interval, the reverse acceleration doubles that of what it was before, to produce a turn the other direction? 
+No. If the acceleration is doubled, whichever direction, the magnitude of shift per interval is, like, squared that of before. No. 
+
+OKKKAAYYYYY.... I've been going at this for three days. Here's my freaking code. 
+
+var Bee = function() {
+    this.that = millis(); //WHAT?? this.that works but not this.location for position...
+    this.position= new PVector(10, 200);
+    this.velocity = new PVector(0, 0);
+    this.destination = new PVector(0, 0);
+    this.forward = true;
+    this.peaks = 3;
+    //because peaks*(x-x/2) = 3*(200[shiftMag]-100) = width-this.position.x
+    this.forwardA = (width-this.position.x)/this.peaks*2;
+    this.backwardA = this.forwardA*2;
+    this.time = 0; 
+    this.speed = 0.5;
+};
+Bee.prototype.update = function() {
+    if (millis()-this.that >= 500) {
+        this.that = millis();
+        this.forward=!this.forward;
+        this.forwardA*=2;
+        this.backwardA*=2;
+    }
+    switch (this.forward) {
+        case (true): 
+            this.destination.set(this.position.x+this.forwardA, 0);
+            break;
+        case (false):
+            this.destination.set(this.position.x-this.backwardA/2, 0);
+    }
+    var dir = this.destination.x-this.position.x;
+    var accel = dir/(Math.pow((frameCount/2), 2)+frameCount/2)/2;
+    var acceleration = new PVector(dir/465, 0);
+    this.velocity.x+=acceleration.x;
+    this.velocity.y = sin(this.time*this.peaks)*2;
+    if (this.velocity.x>10) {
+        this.velocity.x=10;
+    } else if (this.velocity.x<-10) {
+        this.velocity.x=-10;
+    }
+    //println(this.velocity);
+    this.position.add(this.velocity);
+    this.time+=this.speed;
+};
+
+I don't need formulas. I don't need conditions to double constant acceleration ptfff... All I need is a sine wave for y axis and a cosine wave for x axis. Increment the x a little to add velocity, to make a loop not a circle (sin+cos=circle), and now I have to figure out how to change general x/y direction. 
+
+UPDATE: I figured out general acceleration. Everything is independent from this.position, so just use the old random acceleration that was taught earlier in the lesson. :) (My acceleration is different, but hopefully I'll come back to this to figure out how to use randomP2D)
+
+Also, I created this ~August 5th. (8th now) UPDATE: Fixed reverse spin function. Click a few times. UPDATE: Fixed wrap function thanks to @elmt2
+
+TODO: 
+*/
+
+var bees = []; //this idea was taken
+var beeIndex = 0; //from  https://www.khanacademy.org/computer-programming/particles/5301463482
+var keys = [];
+var f = frameCount, b = 25; //background
+
+var Bee = function() {
+    this.time = 0; //degrees for sin/cos
+    this.loopiness = random(15, 20); //how quickly degrees increment; the quicker, the rounder the bee 
+    //this affects the speed at which the mover loops, but be cautious, for too much x velocity, say, can bee too much pull on the spanX, or the loop, stretching it out. Set a condition, it about to loop, decrease velocity
+    this.velocity = new PVector(0, 0);
+    this.midpoint = new PVector(mouseX, mouseY);
+    this.stretchX = 15;
+    this.stretchY = 4/3*this.stretchX; //
+    this.color = color(random(0, 50), random(0, 50), random(0,50));
+    bees[beeIndex] = this;
+    beeIndex++;
+};
+
+Bee.prototype.update = function() {
+    if (mouseIsPressed) { this.loopiness*=-1; }
+    this.newPosition = new PVector(this.midpoint.x+cos(this.time)*this.stretchX, this.midpoint.y+-sin(this.time)*this.stretchY); //calculates new position revolving around midpoint, scales size
+    this.acceleration = new PVector(random(-2, 2), random(-2, 2));
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(3);
+    this.midpoint.add(this.velocity); //midpoint with random acceleration
+    this.time+=this.loopiness;
+    this.wrap(this.midpoint);
+};
+
+Bee.prototype.wrap = function(vector) {
+    if (vector.x !== constrain(vector.x, 0, width)) {
+        vector.x = abs(vector.x-width);
+    } else if (vector.y !== constrain(vector.y, 0, height)) {
+        vector.y = abs(vector.y-height);
+    }
+};
+
+Bee.prototype.display = function() {
+    fill(this.color);
+    ellipse(this.newPosition.x, this.newPosition.y, 10, 10);
+};
+
+keyPressed = function() {
+    keys[keyCode] = true;
+    if (keys[ENTER]) {
+        new Bee();
+    }
+    if (keys[BACKSPACE]) {
+        if (beeIndex>0) {
+            bees.pop(); //remove last element from array
+            beeIndex--; //because that index is now undefined, we need to set it to new Bee() when ENTER
+        }
+    }
+};
+
+keyReleased = function() {
+    keys[keyCode] = false;
+};
+
+var f = 0;
+
+draw = function() {
+    if (frameCount-f >= 50) {
+        f = frameCount;
+        b+=50;
+    } else { b = 25; }  //please, how do I make this a ternary conditional???
+    
+    noStroke();
+    fill(255, 255, 255, b);
+    rect(0, 0, width, height);
+    for (var i in bees) { //awesome JS conditional or what?!
+        bees[i].update();
+        bees[i].display();
+    }
+    fill(f);
+    textFont(createFont("monospace"), 12);
+    text("Options:\nClick\nENTER\nDELETE", 10, 10);
+    if (f<256) { f++; } //deal with it
+};
+
