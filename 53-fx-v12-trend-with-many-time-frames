@@ -1,0 +1,26 @@
+var m1 = [];
+var m2 = [];
+var m4 = [];
+var m8 = [];
+var m16 = [];
+
+for(var i = random(0, 50); i<419; i++){
+    m1.push(round(noise(i/random(19, 67))));
+    if(m1.length%2===0){
+        m2.push(round((m1[m1.length-1]+m1[m1.length-2])/2));
+    }
+    if(m1.length%4===0){
+        m4.push(round((m1[m1.length-1]+m1[m1.length-2]+m1[m1.length-3]+m1[m1.length-4])/4));
+    }
+    if(m1.length%8===0){
+        m8.push(round((m1[m1.length-1]+m1[m1.length-2]+m1[m1.length-3]+m1[m1.length-4]+m1[m1.length-5]+m1[m1.length-6]+m1[m1.length-7]+m1[m1.length-8])/8));
+    }
+    if(m1.length%16===0){
+        m16.push(round((m1[m1.length-1]+m1[m1.length-2]+m1[m1.length-3]+m1[m1.length-4]+m1[m1.length-5]+m1[m1.length-6]+m1[m1.length-7]+m1[m1.length-8]+m1[m1.length-9]+m1[m1.length-10]+m1[m1.length-11]+m1[m1.length-12]+m1[m1.length-13]+m1[m1.length-14]+m1[m1.length-15]+m1[m1.length-16])/16));
+    }
+}
+for(var i = 0; i<m1.length; i++){
+    println(m1[i]+"   "+((i+1)%2===0?m2[floor(i/2)]:"")+"   "+((i+1)%4===0?m4[floor(i/4)]:"")+"   "+((i+1)%8===0?m8[floor(i/8)]:"")+"   "+((i+1)%16===0?m16[floor(i/16)]:""));
+}
+
+
