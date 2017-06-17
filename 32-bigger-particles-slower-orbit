@@ -1,0 +1,59 @@
+//Can you make a more realistic orbit with your mouse?
+
+var Mover = function(size) {
+  this.position = new PVector(random(width), random(height));
+  this.velocity = new PVector(0, 0);
+  this.acceleration = new PVector(0, 0);
+  this.size = size;
+  this.color = [random(0, 130), random(0, 130), random(0, 130)];
+};
+
+Mover.prototype.update = function() {
+    var mouse = new PVector(mouseX, mouseY);
+    var dir = PVector.sub(mouse, this.position);
+    dir.normalize();
+    dir.mult(1/this.size+1/this.size/2);
+    this.acceleration = dir;
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(5);
+    this.position.add(this.velocity);
+};
+
+Mover.prototype.display = function() {
+  noStroke();
+  strokeWeight(2);
+  fill(this.color[0], this.color[1], this.color[2], 120);
+  ellipse(this.position.x, this.position.y, this.size, this.size);
+};
+
+Mover.prototype.checkEdges = function() {
+
+  if (this.position.x > width) {
+    this.position.x = 0;
+  } 
+  else if (this.position.x < 0) {
+    this.position.x = width;
+  }
+
+  if (this.position.y > height) {
+    this.position.y = 0;
+  } 
+  else if (this.position.y < 0) {
+    this.position.y = height;
+  }
+};
+
+var movers = [];
+
+for (var i = 0; i < random(20, 60); i++) {
+    movers[i] = new Mover(random(5, 20)); 
+}
+
+draw = function() {
+    background(255, 255, 255);
+    for (var i = 0; i < movers.length; i++) {
+        movers[i].update();
+        movers[i].display(); 
+    }
+};
+
