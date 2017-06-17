@@ -1,0 +1,96 @@
+/**Oops, this was supposed to be v1.2
+ * v1.1 didn't have the reproduction via using the genetics and performances arrays, well I figured out a simple basic one. :) Next, complexity and evolutionary laws (nothing is perfect, graph the random mutations' effect...)
+ * 
+ * Alright here's the plan
+ * I wanna make another evolution program
+ * but 
+ * with generations
+ * meaning genes that pass on!
+ * heres my idea:
+ * organisms generated that shoot (straight line) toward target on other side of canvas
+ * random vectors
+ * same starting point forever
+ * ***btw this is just evolution v1.0!
+ * say a point ends up 30px away from target
+ * so it has say 1/30 chance of passing genes
+ * vs a point thats 1 px away, 1/1 chance (+- some) of passing
+ * 
+ * so i have
+ * generation of a genetics
+ * BTW this is ALL me, THIS IS ALL ME :))))
+ * movement of organisms 
+ * ending point
+ * calculation
+ * determination whether to die and next spot filled with same genes or to die and next spot filled with random genes (idea for next time: if case 2, take average genes of genetics and thatll be the next)
+ * also, genetics size always same. maybe the fittest will increase that number, and i'll later have some concept of "bloodlines" or "survival lines", where the least fittest stop reproducing
+ * btw new personal rule: each program should take 30-60 minutes. no longer. meaning you will make new ideas in v1.1, v1.1.2, etc.
+ * 
+ * Goal: graph percent of genetics w/ perfect aim over time--is it exponential or linear? geometric or arithmetic?
+ * 
+ * my code is shit. sorry. 11:10 pm. 5h/night past 15 nights
+ */
+
+var maximum = 36;
+var index = 0;
+var population = [];
+var performances = [];
+var genetics = [];
+var target = new PVector(random(175, 300), random(175, 300));
+var first = true; //track first gen
+var perfects = 0; //track amount who passed on their genes
+
+var Org = function(){
+    this.genetics = !first && performances[index]<10 ? new PVector(genetics[index].x, genetics[index].y) : new PVector(random(-5, 30), random(-5, 30)); //for now, just means that if its close enough, itll pass on its genes
+    if(!first && performances[index]<10){perfects++;}
+    this.pos = new PVector(50, 50);
+    this.inc = this.genetics.get();
+    this.inc.normalize();
+    this.speed = this.inc.get();
+    this.speed.mult(3.5);
+    this.inc.mult(20);
+    this.nextPos = this.pos.get();
+    this.nextPos.add(this.inc);
+    population[index] = this;
+    genetics[index] = this.genetics;
+    index++;
+};
+
+Org.prototype.draw = function() {
+    line(this.pos.x, this.pos.y, this.nextPos.x, this.nextPos.y);
+    
+    this.pos.add(this.speed); 
+    this.nextPos.add(this.speed);
+};
+
+for(var i = 0; i<maximum; i++){
+    new Org();
+}
+frameRate(60);
+draw = function() {
+    background(255);
+    if(frameCount%(round(target.mag()/4.5))===0){
+        index = 0; 
+        while(index<maximum){
+            performances[index] = dist(population[index].pos.x, population[index].pos.y, target.x, target.y);
+            population[index] = new Org(); //index incremented within Org object 
+        }
+        var average = 0;
+        for(var i = 0; i<performances.length; i++){
+            average+=performances[i];
+        }
+        println(average/performances.length+"     "+perfects);
+        perfects = 0;
+    }
+    for(var i = 0; i<population.length; i++){
+        population[i].draw(); //make it move
+        first = false;
+    } 
+    rect(target.x, target.y, 5, 5);
+};
+
+/*after t,
+reinput 10 organisms
+who look at an array of ending distance between target and organisms
+and decide based on that whether to take parents genes!
+*/
+
