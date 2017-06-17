@@ -1,0 +1,52 @@
+/*
+//Old version:
+
+
+
+//Don't mind the error buddy, just restart the program
+
+translate(200, 200);
+var fine = 200;
+draw = function() {
+for (var j = 0; j < 4; j++) {
+    rotate(90);
+    for(var i = 0; i<200; i+=fine) {
+        line(width/2-i, 0, 0, 0+i);
+        //line(width/2-i, 200, 200, i);
+    }
+    }
+    if (fine > 1) {
+        fine-=5;
+    }
+    //resetMatrix();
+};
+
+July 2016
+*/
+
+var intercept = 10;
+var spacing = 4;
+var maximum = 200;
+var minimum = -100;
+translate(width/2, height/2);
+draw = function() {
+    //fade
+    fill(255, 255, 255, 1);
+    translate(-width/2, -height/2);
+    //rect(-1, -1, width+2, height+2);
+    translate(width/2, height/2);
+    
+    //lines
+    for (var quadrant = 0; quadrant < 4; quadrant++) {
+        stroke(sin(frameCount)*200, cos(frameCount)*200, sin(frameCount)*200);
+        rotate(90);
+        line(180 - intercept, 0, 0, intercept);
+    }
+    //update
+    intercept+=spacing;
+    if(intercept > maximum || intercept < minimum){
+        spacing*=-1.01;
+        maximum += 25;
+        minimum -= 25;
+    }
+};
