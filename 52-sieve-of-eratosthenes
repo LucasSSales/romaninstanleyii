@@ -1,0 +1,70 @@
+/*January 17, 2017 0:30 
+LOG:
+Here's how this should go:
+List: 2-100
+2 is prime, take out all greater than 2 and divisible by 2
+After that, next prime we see is 3. Take out all greater than 3 and divisible by 3.
+After that, next prime seen is 5. Remove all > 5 and %5===0.
+So forth. 
+How the hell does that translate to a function? Recursion?
+I've never done recursion, only understood existing recursion programs, like that fractal tree. 
+I'm only a programmer, not a computer scientist. 
+Anyway let's take this on. 
+Function:
+you have a set of nat nums 2-100, 2-1000, whatever
+x initialized index 0 of this set, or 2
+loop through the set, current num = y, in set1, if !(y>x && y%x===0), add y to set2, empty at first
+finished, set1 = set2
+recall, reset, whatever youu call it... the function. 
+x is now index 1 of set1 (set2 from last round)
+
+
+HOLY MOLY IT WORKED! 
+IT'S 1:20, HOWEVER
+THANK YOU ALL, ROUND OF APPLAUSE FOR THE SIEVE OF ERATOSTHENES
+(SO MUCH MATH o_0)
+TONIGHT ON LATE PROGRAMMING WITH ROMAN MIROV 
+NIGHT
+
+I wonder what's the limit on this bad boy?
+*/
+var showMore = false;
+var limit = 30000;
+var initialSet = [];
+for(var i = 0; i<limit; i++){
+    initialSet[i] = i+2;
+}
+var recursion = function(index, lim, set){
+    //start off with a set from 2 – limit+1
+    var set1 = set; 
+    
+    //x is the number to be greater than a multiple of...
+    var x = set1[index];
+    
+    var set2 = []; //this will be the next set for the next round, becoming set1...
+    var set2Index = 0; //to avoid undefined, have a separate index for set2, only increment when eligible/fitting/etc number for next set(set2) is met/found
+    //go through the set1
+    for(var y = 0; y<set1.length; y++){
+        //if y fits to be in set2, add y to set2, increment set2Index
+        if(!(set1[y]>x && set1[y]%x===0)){
+            set2[set2Index] = set1[y];
+            set2Index++;
+        }
+    }
+    //x is no longer 2, but the next prime 
+    index++;
+    if(index<set1.length){
+        recursion(index, limit, set2);
+    } else{
+        //if set of primes completed (filled to limit)
+        background(0);
+        fill(255, 217, 0);
+        textFont(createFont("cursive"), showMore?9:30);
+        text("Primes from 2 – "+set1[set1.length-1]+": "+set1, 0, 0, 485, 490);
+        textSize(8);
+        text("ALL created by Roman Mirov, 13 yo!", 10, 495);
+    }
+};
+
+recursion(0, limit, initialSet);
+
