@@ -1,0 +1,136 @@
+/**DESCRIPTION:
+ * changing environment (target)
+ * user interaction
+ * fixed target range beyond radius bug
+ * 
+ * NEXTOBJECTIVES:
+ * determine what to do with non successful organisms
+ * bloodlines, so unsuccessful parents will no longer produce as organisms dont randomly pop up
+ * conclusion: least fittest stop reproducing; children have slight deviation from parents producing better concept of mutation; most fittest procreate w/ more children, least fittest maybe less children... i was a thriving, breathing statistical model of evolution by natural selection
+ * movement is one dimensional--a straight line. make it so that they curve or have a more complicated algo for 2d movement toward the target
+ * 
+ * answer to current system would chart be exponential or linear of fraction of population that has perfect aim. Because the genes are exactly that of parents and those that arent are regenerated randomly, there is no variable/factor that would make the growth of perfect aiming organisms a multiple of the previous generation. About 2 successful gene inheritance per generation. So thats the common difference. 
+ * 
+ * THIS IS ALL ROMAN MIROV
+ */
+
+var initial = 36;
+var index = 0;
+var population = [];
+var performances = [];
+var genetics = [];
+var target = new PVector(random(175, 300), random(175, 300)), vel = new PVector(0, 0), accel = new PVector(0, 0);
+var first = true; //track first gen
+var perfects = 0; //track amount who passed on their genes
+var range = random(5, 30), state = "idle", changing = round(random(0, 1)); //target attributes
+
+var Org = function(){
+    this.range = range/2;
+    this.genetics = !first && performances[index]<=this.range ? new PVector(genetics[index].x, genetics[index].y) : new PVector(random(-5, 30), random(-5, 30)); //for now, just means that if its close enough, itll pass on its genes
+    if(!first && performances[index]<=this.range){   perfects++;}
+    this.pos = new PVector(50, 50);
+    this.inc = this.genetics.get();
+    this.inc.normalize();
+    this.speed = this.inc.get();
+    this.speed.mult(3.5);
+    this.inc.mult(20);
+    this.nextPos = this.pos.get();
+    this.nextPos.add(this.inc);
+    population[index] = this;
+    genetics[index] = this.genetics;
+    this.index = index;
+    index++;
+};
+
+Org.prototype.draw = function() {
+    if(performances[this.index]<=this.range){
+        stroke(0, 255, 0);
+    } else{
+        stroke(255, 0, 0);
+    }
+    line(this.pos.x, this.pos.y, this.nextPos.x, this.nextPos.y);
+    
+    this.pos.add(this.speed); 
+    this.nextPos.add(this.speed);
+};
+
+for(var i = 0; i<initial; i++){
+    new Org();
+}
+println("Average distances:"+"  |  "+"Successful genes: |");
+println("––––––––––––––––––––|––––––––––––––––––––|");
+draw = function() {
+    background(0);
+    var travel = population[0].nextPos.get();
+    travel.sub(50, 50, 0);
+    var targetCoord = target.get();
+    targetCoord.sub(50, 50, 0);
+    //compare radii
+    if(travel.mag()>=targetCoord.mag()){
+        //reset the population
+        index = 0; 
+        while(index<initial){
+            performances[index] = dist(population[index].nextPos.x, population[index].nextPos.y, target.x, target.y);
+            population[index] = new Org(); //index incremented within Org object 
+            //so before wiping out the parent, save its performance/data 
+        }
+        //display average distances from target and organism genes passed
+        var average = 0;
+        for(var i = 0; i<performances.length; i++){
+            average+=performances[i];
+        }
+        average=round(average/performances.length);
+        var averageDigits = average.toString().length;
+        var perfectsDigits = perfects.toString().length;
+        
+        println("      "+average+(averageDigits===2 ? " " : "")+
+            "           |          "+
+            perfects+(""+perfectsDigits===2 ? -"" : perfectsDigits===1 ? " " : "")+"        |");//it works. that's it.
+        println("––––––––––––––––––––|––––––––––––––––––––|"); 
+        
+        perfects = 0;
+    }
+    
+    for(var i = 0; i<population.length; i++){
+        population[i].draw(); //make it move
+        first = false;
+    } 
+    if(changing){
+        accel.set(random(-0.001, 0.001), random(-0.001, 0.001));
+        vel.add(accel);
+        target.add(vel);
+    }
+    if(state==="idle"){
+        noFill();
+        stroke(255);
+        ellipse(target.x, target.y, range, range);
+    } else if(state==="moving"){
+        fill(255);
+        stroke(255);
+        ellipse(mouseX, mouseY, range, range);
+    }
+};
+
+mousePressed = function(){
+    if(dist(mouseX, mouseY, target.x, target.y)<range){
+        state = "moving";
+    }
+};
+
+mouseReleased = function(){
+    if(state==="moving"){
+        target.set(mouseX, mouseY);
+    }
+    state = "idle";
+};
+
+keyPressed = function(){
+    if(keyCode===187){
+        range++;
+    } else if(keyCode===189&&range>5){
+        range--;
+    } else if(keyCode===77){
+        changing = !changing;
+    }
+};
+
