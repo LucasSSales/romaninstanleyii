@@ -1,0 +1,20 @@
+var ParentObjectType = function(){
+    
+};
+
+ParentObjectType.prototype.method = function() {
+    
+};
+
+var childObjectConstructor = function(){
+    ParentObjectType.call(this);
+    this.variable = "value";
+};
+
+childObjectConstructor.prototype = Object.create(ParentObjectType.prototype);
+
+childObjectConstructor.prototype.method2 = function() {
+    
+};
+
+
