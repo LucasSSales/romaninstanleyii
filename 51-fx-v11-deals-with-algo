@@ -1,0 +1,112 @@
+var bars = []; //for chart to track the closing prices every frame 
+/*This is just to estimate the market line*/
+var noiseVal = random(0, 1000); //noise value
+var noiseVel = 0; //velocity/incrementation of noiseval
+var barIndex = 0; //adds current bar to bars[barindex]
+var maLength = 2; //"time" per bar
+var sum = 0; //sum of previous x bars
+var averagep1 = 0;
+var averagep2 = 0; //average of previous x bars
+
+//used in if(barIndex...) block
+var above = false; 
+var below = false;
+var enter = false; //only once per order
+var n = false; //n for entered
+var ext = false; //exit, only once per order
+var x = false; //x for exited 
+
+var transaction;
+var monay = 0;
+
+strokeWeight(maLength);
+textAlign(CENTER);
+background(0);
+frameRate(10);
+
+draw = function() {
+    /*closing price for frame*/
+    noiseVel = random(0.001, 0.06);
+    noiseVal+=noiseVel;
+    bars[barIndex] = noise(noiseVal);
+    
+    //if canvas space left
+    if(barIndex<290){
+        //if maLength indeces filled 
+        if(frameCount>maLength){
+            /*definitions for this frame*/
+            
+            //average for past x values
+            for(var i = 0; i<maLength; i++){
+                sum += bars[barIndex-i]; 
+            }
+            averagep2 = sum/maLength; 
+            sum = 0;
+            //average current-1-x to current-1
+            for(var i = 0; i<maLength; i++){
+                sum += bars[barIndex-1-i];
+            }
+            averagep1 = sum/maLength;
+            sum = 0;
+            
+            /*displaying information*/
+            //average for x bars every xth bar
+            if(frameCount%maLength===0){
+                
+                
+            //above previous with a steep enough slope
+            above = averagep1<averagep2 && abs(averagep2-averagep1)>0.0155;
+            //below previous with steep enough slope
+            below = averagep1>averagep2 && abs(averagep2-averagep1)>0.0108;
+            
+            /*transactions*/
+            if(above){
+                fill(0, 255, 0);
+                stroke(0, 255, 0);
+                if(x){
+                    enter = true;
+                } else if(n){
+                    enter = false;
+                }
+                n = true; 
+                x = false;
+            } else if(below){
+                fill(255, 0, 0);
+                stroke(255, 0, 0);
+                if(n){
+                    ext = true;
+                } else if(x){
+                    ext = false;
+                }
+                x = true;
+                n = false;
+            } else{
+                fill(150);
+                stroke(150);
+                enter = ext = false;
+            }
+            
+            
+                line(barIndex*2, 300-averagep1*250, barIndex*2, 305-averagep1*250);
+                pushMatrix();
+                translate(barIndex*2, 270-averagep1*250);
+                rotate(-90);
+                if(enter){
+                    text("buy", 0, 0);
+                } else if(ext){
+                    text("sell", 0, 0);
+                    monay+=round(random(10, 10000));
+                    println("Balance: $"+monay/100);
+                }
+                popMatrix();
+            }
+        //reset
+        barIndex++; 
+        averagep1 = 0;
+        averagep2 = 0;
+        }
+    } else{
+        background(0);
+        barIndex = 0;
+    }
+};
