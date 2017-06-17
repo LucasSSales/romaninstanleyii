@@ -1,0 +1,45 @@
+var vector;
+
+draw = function() {
+    background(255);
+    stroke(0);
+    ellipse(200, 200, 200, 200);
+    stroke(0, 0, 0, 150);
+    vector = new PVector(200-mouseX, 200-mouseY);
+    vector.normalize();
+    vector.mult(100);
+    //c
+    line(200, 200, 200-vector.x, 200-vector.y);
+    //a
+    line(200-vector.x, 200-vector.y, 200-vector.x, 200);
+    //b
+    line(200-vector.x, 200, 200, 200);
+    stroke(0);
+    //horiz
+    if  (0-vector.x<0) {
+        for (var i = 0; i < 100; i+=13) {
+            line(100+i, 200, 105+i, 200);
+        }
+    } else if (0-vector.x>0) {
+        for (var i = 0; i < 100; i+=13) {
+            line(200+i, 200, 205+i, 200);
+        }
+    }
+    //vert
+    if (0-vector.y<0) {
+        for (var i = 0; i < abs(vector.y-5); i+=13) {
+            line(200-vector.x, 200+i, 200-vector.x, 205+i);
+        }
+    } else if (0-vector.y>0) {
+        for (var i = 0; i < abs(vector.y-5); i+=13) {
+            line(200-vector.x, 200-i, 200-vector.x, 205-i);
+        }
+    }
+    //diag or c
+    var c = PVector.mult(vector, -1);
+    c.normalize();
+    //fix like others
+    for (var i = 0; i < 8; i++) {
+        line(200 -c.x *i*13, 200 -c.y *i*13, 200 -c.x *i*13, 200 -c.y *i*13);
+    }
+};
