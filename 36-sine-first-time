@@ -1,0 +1,16 @@
+//WHY DO PEOPLE VOTE THIS UP WOW! :O
+//Summer 2016 no knowledge of calculus, trigonometry, or advanced algebra
+//almost 8th grade yet I got down the concept of sine and cos
+background(0);
+var i = 0;
+draw = function() {
+    i+=1;
+    noStroke();
+    //CAUTION: MATH AHEAD
+    //mapping sin(i*3) returns a value between -1, 1 and mapping that to 0, 255 returns a sine wave colored black on the bottom (-1 or 3PI/2) and white on top (1 or PI/2). Since the y axis here is flipped the bottom would relatively be the top (I don't know what I'm saying XD). SO NOW, if you map abs(sin(i*3)) to the same values you get something only between 0, 1, 0 being the middle as the absolute value of the following negative numbers increases, making a black tint in the middle. Inverse that by saying -abs(sin.....) to get black tint on edges. Oh and if you to inverse make sure to map that from -1, 0 (ZERO) to 0, 255, because it never reaches above (technically below since -abs) 0, to give it pure white and not gray.
+    var sincolor = map(-abs(sin(i*3)), -1, 0, 0, 255);
+    fill(sincolor);
+    //midpoint starts halfway to top, adds the sin of i scaled thrice (how fast to increment/number of peaks), scale THAT to 100 to make a visible change/taller
+    //try ...sin(i*30)*10
+    ellipse(0+i, height/2+sin(i*3)*100, 20, 20); 
+};
