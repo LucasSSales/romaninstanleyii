@@ -1,0 +1,48 @@
+var bars = []; //for chart to track the closing prices every frame 
+/*This is just to */
+var noiseVal = random(0, 100); //noise value
+var noiseVel = 0; //velocity/incrementation of noiseval
+var barIndex = 0; //adds current bar to bars[barindex]
+var maLength = 2; //"time" per bar
+var sum = 0; //sum of previous x bars
+var averagep1 = 0;
+var averagep2 = 0; //average of previous x bars
+
+strokeWeight(2*maLength);
+background(0);
+
+draw = function() {
+    noiseVel = random(0.001, 0.06);
+    noiseVal+=noiseVel;
+    bars[barIndex] = noise(noiseVal);
+    if(barIndex<290){
+        if(frameCount>maLength){
+            //average up to current price
+            for(var i = 0; i<maLength; i++){
+                sum += bars[barIndex-i]; //current bar, currentbar-1, currentbar-2...currentbar-maLength
+            }
+            averagep2 = sum/maLength; 
+            sum = 0;
+            //average up to second to current price
+            for(var i = 0; i<maLength; i++){
+                sum += bars[barIndex-1-i];
+            }
+            averagep1 = sum/maLength;
+            sum = 0;
+            if(averagep1<averagep2 && abs(averagep2-averagep1)>0.0108){
+                stroke(0, 255, 0);
+            } else if(averagep1>averagep2 && abs(averagep2-averagep1)>0.0108){
+                stroke(255, 0, 0);
+            } else{
+                stroke(150);
+            }
+            if(frameCount%maLength===0){
+                //line(t*2, 300-averagep1*130, 2*(maLength+t), 300-averagep2*130); //fix
+                point(barIndex*2, 300-averagep1*130);
+            }
+        }
+        barIndex++; //track every frame while still on screen
+    }
+    averagep1 = 0;
+    averagep2 = 0;
+};
