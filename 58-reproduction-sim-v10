@@ -1,0 +1,72 @@
+/**Alright here's the plan
+ * I wanna make another evolution program
+ * but 
+ * with generations
+ * meaning genes that pass on!
+ * heres my idea:
+ * organisms generated that shoot (straight line) toward target on other side of canvas
+ * random vectors
+ * same starting point forever
+ * ***btw this is just evolution v1.0!
+ * say a point ends up 30px away from target
+ * so it has say 1/30 chance of passing genes
+ * vs a point thats 1 px away, 1/1 chance (+- some) of passing
+ * 
+ * so i have
+ * generation of a genetics
+ * BTW this is ALL me, THIS IS ALL ME :))))
+ * movement of organisms 
+ * ending point
+ * calculation
+ * determination whether to die and next spot filled with same genes or to die and next spot filled with random genes (idea for next time: if case 2, take average genes of genetics and thatll be the next)
+ * also, genetics size always same. maybe the fittest will increase that number, and i'll later have some concept of "bloodlines" or "survival lines", where the least fittest stop reproducing
+ * btw new personal rule: each program should take 30-60 minutes. no longer. meaning you will make new ideas in v1.1, v1.1.2, etc.
+ * 
+ * Goal: graph percent of genetics w/ perfect aim over time--is it exponential or linear? geometric or arithmetic?
+ * 
+ * my code is shit. sorry. 11:10 pm. 5h/night past 15 nights
+ */
+
+var genetics = [];
+for(var i = 0; i<10; i++){
+    genetics.push(new PVector(random(-10, 30), random(-10, 30)));
+}
+
+var Org = function(i){
+    this.pos = new PVector(50, 50);
+    this.ref = i;
+    this.dir = genetics[i].get();
+    this.dir.normalize();
+    this.dir.mult(20);
+    this.dir.add(this.pos);
+};
+
+Org.prototype.draw = function() {
+    line(this.pos.x, this.pos.y, this.dir.x, this.dir.y);
+    
+    var newPos = genetics[this.ref].get();
+    newPos.normalize();
+    this.pos.add(newPos); 
+    
+    this.dir = genetics[this.ref].get();
+    this.dir.normalize();
+    this.dir.mult(20);
+    this.dir.add(this.pos);
+};
+
+var population = [];
+for(var i = 0; i<genetics.length; i++){
+    population.push(new Org(i));
+}
+
+draw = function() {
+    background(255);
+    for(var i = 0; i<population.length; i++){
+        population[i].draw(); //make it move
+        if(frameCount%300===0){
+            genetics[i] = new PVector(random(-10, 50), random(-10, 50));
+            population[i] = new Org(i);
+        }
+    } 
+};
+
